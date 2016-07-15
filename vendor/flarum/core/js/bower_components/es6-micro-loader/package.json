@@ -1,0 +1,47 @@
+{
+  "name": "es6-micro-loader",
+  "version": "0.2.1",
+  "description": "Simplistic ES6 Module Loader for modules transpiled into System.register() format",
+  "author": "Caridy Patino <caridy@gmail.com>",
+  "homepage": "https://github.com/caridy/es6-micro-loader",
+  "keywords": [
+    "es6",
+    "module",
+    "loader",
+    "system",
+    "register"
+  ],
+  "bugs": "https://github.com/caridy/es6-micro-loader/issues",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "server.js",
+    "dist/"
+  ],
+  "scripts": {
+    "test": "npm run test-compile; ./node_modules/.bin/_mocha tests/unit/*.js --reporter spec",
+    "test-compile": "cd tests/unit/src/; ../../../node_modules/.bin/compile-modules convert -f es6-module-transpiler-system-formatter **/*.js -o ../build",
+    "benchmark-compile-cjs": "cd tests/benchmark/src/; ../../../node_modules/.bin/compile-modules convert -f commonjs *.js -o ../cjs",
+    "benchmark-compile-bundle": "cd tests/benchmark/src/; ../../../node_modules/.bin/compile-modules convert -f bundle *.js -o ../bundle/main.js",
+    "benchmark-compile-system": "cd tests/benchmark/src/; ../../../node_modules/.bin/compile-modules convert -f es6-module-transpiler-system-formatter *.js -o ../system",
+    "benchmark": "npm run benchmark-compile-bundle; npm run benchmark-compile-cjs; npm run benchmark-compile-system; node tests/benchmark/run.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "es6-promise": "^1.0.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "0.1.*",
+    "grunt-contrib-copy": "^0.5.0",
+    "grunt-contrib-uglify": "^0.5.1",
+    "grunt-contrib-jshint": "^0.10.0",
+    "benchmark": "^1.0.0",
+    "es6-module-transpiler": "~0.8.2",
+    "es6-module-transpiler-system-formatter": "~0.2.0",
+    "chai": "*",
+    "mocha": "*",
+    "xunit-file": "*",
+    "chai-as-promised": "*"
+  }
+}

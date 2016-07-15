@@ -1,0 +1,14 @@
+{
+  "name": "es6-micro-loader",
+  "homepage": "https://github.com/caridy/es6-micro-loader",
+  "version": "0.2.1",
+  "_release": "0.2.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.2.1",
+    "commit": "f25b6e98a1f8a2dc16f8b31fb72d830c2a747703"
+  },
+  "_source": "git://github.com/caridy/es6-micro-loader.git",
+  "_target": "v0.2.1",
+  "_originalSource": "caridy/es6-micro-loader"
+}
