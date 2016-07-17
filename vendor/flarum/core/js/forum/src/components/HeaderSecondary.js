@@ -8,6 +8,8 @@ import NotificationsDropdown from 'flarum/components/NotificationsDropdown';
 import ItemList from 'flarum/utils/ItemList';
 import listItems from 'flarum/helpers/listItems';
 
+import FeedBack from 'flarum/components/FeedBack';
+
 /**
  * The `HeaderSecondary` component displays secondary header controls, such as
  * the search box and the user menu. On the default skin, these are shown on the
@@ -42,7 +44,9 @@ export default class HeaderSecondary extends Component {
           icon: app.locale === locale ? 'check' : true,
           onclick: () => {
             if (app.session.user) {
-              app.session.user.savePreferences({locale}).then(() => window.location.reload());
+              app.session.user.savePreferences({
+                locale
+              }).then(() => window.location.reload());
             } else {
               document.cookie = `locale=${locale}; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT`;
               window.location.reload();
@@ -56,6 +60,14 @@ export default class HeaderSecondary extends Component {
         buttonClassName: 'Button Button--link'
       }), 20);
     }
+
+    items.add('FeedBack',
+      Button.component({
+        children: "反馈",
+        className: 'Button Button--link',
+        onclick: () => app.modal.show(new FeedBack())
+      }), 0
+    );
 
     if (app.session.user) {
       items.add('notifications', NotificationsDropdown.component(), 10);

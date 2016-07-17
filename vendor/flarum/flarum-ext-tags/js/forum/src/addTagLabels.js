@@ -1,4 +1,6 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import DiscussionListItem from 'flarum/components/DiscussionListItem';
 import DiscussionPage from 'flarum/components/DiscussionPage';
 import DiscussionHero from 'flarum/components/DiscussionHero';
@@ -28,7 +30,9 @@ export default function() {
     if (tags && tags.length) {
       const color = tags[0].color();
       if (color) {
-        view.attrs.style = {backgroundColor: color};
+        view.attrs.style = {
+          backgroundColor: color
+        };
         view.attrs.className += ' DiscussionHero--colored';
       }
     }
@@ -39,8 +43,14 @@ export default function() {
   extend(DiscussionHero.prototype, 'items', function(items) {
     const tags = this.props.discussion.tags();
 
+    console.log(this.props.discussion.data.attributes.bestId);
+    window.currbestId = this.props.discussion.data.attributes.bestId;
     if (tags && tags.length) {
-      items.add('tags', tagsLabel(tags, {link: true}), 5);
+      window.currIsArticle = tags[0].isArticle();
+      console.log(window.currIsArticle);
+      items.add('tags', tagsLabel(tags, {
+        link: true
+      }), 5);
     }
   });
 }
