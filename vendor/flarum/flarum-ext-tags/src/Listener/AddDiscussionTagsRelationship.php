@@ -18,6 +18,7 @@ use Flarum\Event\ConfigureApiController;
 use Flarum\Event\GetApiRelationship;
 use Flarum\Event\GetModelRelationship;
 use Flarum\Event\PrepareApiAttributes;
+use Flarum\Tags\Api\Serializer\TagSerializer;
 use Flarum\Tags\Tag;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -63,7 +64,8 @@ class AddDiscussionTagsRelationship
     {
         if ($event->isController(Controller\ListDiscussionsController::class)
             || $event->isController(Controller\ShowDiscussionController::class)
-            || $event->isController(Controller\CreateDiscussionController::class)) {
+            || $event->isController(Controller\CreateDiscussionController::class)
+        ) {
             $event->addInclude('tags');
         }
 
@@ -79,6 +81,10 @@ class AddDiscussionTagsRelationship
     {
         if ($event->isSerializer(DiscussionSerializer::class)) {
             $event->attributes['canTag'] = $event->actor->can('tag', $event->model);
+        }
+        if ($event->isSerializer(TagSerializer::class)) {
+            $event->attributes['questions_count'] = $event->model->questions_count;
+
         }
     }
 }

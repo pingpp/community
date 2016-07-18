@@ -116,7 +116,11 @@ class UpdateTagMetadata
         }
 
         foreach ($tags as $tag) {
-            $tag->discussions_count += $delta;
+            if ($tag->is_article) {
+                $tag->discussions_count += $delta;
+            }else{
+                $tag->questions_count += $delta;
+            }
 
             if ($discussion->last_time > $tag->last_time) {
                 $tag->setLastDiscussion($discussion);
