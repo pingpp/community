@@ -3,15 +3,15 @@
 
 namespace Flarum\Tags\best\Event;
 
-use Flarum\Core\Discussion;
+use Flarum\Core\Post;
 use Flarum\Core\User;
 
-class DiscussionWasBest
+class PostWasBest
 {
     /**
      * @var Discussion
      */
-    public $discussion;
+    public $post;
 
     /**
      * @var User
@@ -22,9 +22,9 @@ class DiscussionWasBest
      * @param Discussion $discussion
      * @param User $user
      */
-    public function __construct(Discussion $discussion, User $user)
+    public function __construct(Post $post, User $user)
     {
-        $this->discussion = $discussion;
+        $this->post = $post;
         $this->user = $user;
     }
 }

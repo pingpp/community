@@ -15,8 +15,8 @@ use Flarum\Core\Access\AssertPermissionTrait;
 use Flarum\Event\PostWillBeSaved;
 use Flarum\Core\Discussion;
 
-use Flarum\Tags\best\Event\DiscussionWasBest;
-use Flarum\Tags\best\Event\DiscussionWasUnbest;
+use Flarum\Tags\best\Event\PostWasBest;
+use Flarum\Tags\best\Event\PostWasUnbest;
 
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -59,9 +59,9 @@ class SaveBestToDatabase
             $post->is_best = $isbest;
 
             if ($isbest) {
-                $post->raise(new DiscussionWasBest($post, $actor));
+                $post->raise(new PostWasBest($post, $actor));
             } else {
-                $post->raise(new DiscussionWasUnbest($post, $actor));
+                $post->raise(new PostWasUnbest($post, $actor));
             }
         }
     }
