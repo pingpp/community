@@ -39,7 +39,10 @@ class PostBasicSerializer extends AbstractSerializer
             'id'          => (int) $post->id,
             'number'      => (int) $post->number,
             'time'        => $this->formatDate($post->time),
-            'contentType' => $post->type
+            'contentType' => $post->type,
+            'agree_count' => (int) $post->agree_count,
+            'praise_count' => (int) $post->praise_count
+
         ];
 
         if ($post instanceof CommentPost) {
