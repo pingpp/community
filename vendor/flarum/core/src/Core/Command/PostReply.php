@@ -35,6 +35,8 @@ class PostReply
      */
     public $data;
 
+    public $isStart;
+
     /**
      * The IP address of the actor.
      *
@@ -48,11 +50,12 @@ class PostReply
      * @param array $data The attributes to assign to the new post.
      * @param string $ipAddress The IP address of the actor.
      */
-    public function __construct($discussionId, User $actor, array $data, $ipAddress = null)
+    public function __construct($discussionId, User $actor, array $data,$isStart = false, $ipAddress = null)
     {
         $this->discussionId = $discussionId;
         $this->actor = $actor;
         $this->data = $data;
         $this->ipAddress = $ipAddress;
+        $this->isStart = $isStart;
     }
 }

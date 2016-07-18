@@ -21119,7 +21119,9 @@ System.register('flarum/components/DiscussionPage', ['flarum/components/Page', '
           key: 'requestParams',
           value: function requestParams() {
             return {
-              page: { near: this.near }
+              page: {
+                near: this.near
+              }
             };
           }
         }, {
@@ -21152,7 +21154,10 @@ System.register('flarum/components/DiscussionPage', ['flarum/components/Page', '
             // Set up the post stream for this discussion, along with the first page of
             // posts we want to display. Tell the stream to scroll down and highlight
             // the specific post that was routed to.
-            this.stream = new PostStream({ discussion: discussion, includedPosts: includedPosts });
+            this.stream = new PostStream({
+              discussion: discussion,
+              includedPosts: includedPosts
+            });
             this.stream.on('positionChanged', this.positionChanged.bind(this));
             this.stream.goToNumber(m.route.param('near') || includedPosts[0] && includedPosts[0].number(), true);
           }
@@ -21230,7 +21235,9 @@ System.register('flarum/components/DiscussionPage', ['flarum/components/Page', '
             // If the user hasn't read past here before, then we'll update their read
             // state and redraw.
             if (app.session.user && endNumber > (discussion.readNumber() || 0)) {
-              discussion.save({ readNumber: endNumber });
+              discussion.save({
+                readNumber: endNumber
+              });
               m.redraw();
             }
           }
@@ -21999,6 +22006,124 @@ System.register('flarum/components/EventPost', ['flarum/components/Post', 'flaru
 });;
 'use strict';
 
+System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flarum/components/ForgotPasswordModal', 'flarum/components/Alert', 'flarum/components/Button', 'flarum/utils/extractText'], function (_export, _context) {
+  "use strict";
+
+  var Modal, ForgotPasswordModal, Alert, Button, extractText, FeedBack;
+  return {
+    setters: [function (_flarumComponentsModal) {
+      Modal = _flarumComponentsModal.default;
+    }, function (_flarumComponentsForgotPasswordModal) {
+      ForgotPasswordModal = _flarumComponentsForgotPasswordModal.default;
+    }, function (_flarumComponentsAlert) {
+      Alert = _flarumComponentsAlert.default;
+    }, function (_flarumComponentsButton) {
+      Button = _flarumComponentsButton.default;
+    }, function (_flarumUtilsExtractText) {
+      extractText = _flarumUtilsExtractText.default;
+    }],
+    execute: function () {
+      FeedBack = function (_Modal) {
+        babelHelpers.inherits(FeedBack, _Modal);
+
+        function FeedBack() {
+          babelHelpers.classCallCheck(this, FeedBack);
+          return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FeedBack).apply(this, arguments));
+        }
+
+        babelHelpers.createClass(FeedBack, [{
+          key: 'init',
+          value: function init() {
+            babelHelpers.get(Object.getPrototypeOf(FeedBack.prototype), 'init', this).call(this);
+
+            this.text = "";
+          }
+        }, {
+          key: 'className',
+          value: function className() {
+            return 'LogInModal Modal--small';
+          }
+        }, {
+          key: 'title',
+          value: function title() {
+            return "意见反馈";
+          }
+        }, {
+          key: 'content',
+          value: function content() {
+            return [m(
+              'div',
+              { className: 'Modal-body' },
+              m(
+                'div',
+                { className: 'Form Form--centered' },
+                m(
+                  'div',
+                  { className: 'Form-group' },
+                  m('textarea', { className: 'FormControl', style: 'height:200px;text-align: left;',
+                    name: 'text', placeholder: '', bidi: this.text })
+                ),
+                m(
+                  'div',
+                  { className: 'Form-group' },
+                  Button.component({
+                    className: 'Button Button--primary Button--block',
+                    type: 'submit',
+                    loading: this.loading,
+                    children: "点击提交"
+                  })
+                )
+              )
+            ), m(
+              'div',
+              { className: 'Modal-footer' },
+              app.forum.attribute('allowSignUp') ? m(
+                'p',
+                { className: 'LogInModal-signUp' },
+                '谢谢您给我们的反馈意见'
+              ) : ''
+            )];
+          }
+        }, {
+          key: 'onready',
+          value: function onready() {
+            this.$('[name=text]').select();
+          }
+        }, {
+          key: 'onsubmit',
+          value: function onsubmit(e) {
+            e.preventDefault();
+
+            this.loading = true;
+
+            console.log("22222");
+            /*app.session.login(email, password, {
+              errorHandler: this.onerror.bind(this)
+            }).then(
+              () => window.location.reload(),
+              this.loaded.bind(this)
+            );*/
+            $.post("", {}).then(function (data, code) {});
+          }
+        }, {
+          key: 'onerror',
+          value: function onerror(error) {
+            if (error.status === 401) {
+              error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+            }
+
+            babelHelpers.get(Object.getPrototypeOf(FeedBack.prototype), 'onerror', this).call(this, error);
+          }
+        }]);
+        return FeedBack;
+      }(Modal);
+
+      _export('default', FeedBack);
+    }
+  };
+});;
+'use strict';
+
 System.register('flarum/components/FieldSet', ['flarum/Component', 'flarum/helpers/listItems'], function (_export, _context) {
   "use strict";
 
@@ -22286,10 +22411,10 @@ System.register('flarum/components/HeaderPrimary', ['flarum/Component', 'flarum/
 });;
 'use strict';
 
-System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flarum/components/Button', 'flarum/components/LogInModal', 'flarum/components/SignUpModal', 'flarum/components/SessionDropdown', 'flarum/components/SelectDropdown', 'flarum/components/NotificationsDropdown', 'flarum/utils/ItemList', 'flarum/helpers/listItems'], function (_export, _context) {
+System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flarum/components/Button', 'flarum/components/LogInModal', 'flarum/components/SignUpModal', 'flarum/components/SessionDropdown', 'flarum/components/SelectDropdown', 'flarum/components/NotificationsDropdown', 'flarum/utils/ItemList', 'flarum/helpers/listItems', 'flarum/components/FeedBack'], function (_export, _context) {
   "use strict";
 
-  var Component, Button, LogInModal, SignUpModal, SessionDropdown, SelectDropdown, NotificationsDropdown, ItemList, listItems, HeaderSecondary;
+  var Component, Button, LogInModal, SignUpModal, SessionDropdown, SelectDropdown, NotificationsDropdown, ItemList, listItems, FeedBack, HeaderSecondary;
   return {
     setters: [function (_flarumComponent) {
       Component = _flarumComponent.default;
@@ -22309,6 +22434,8 @@ System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flaru
       ItemList = _flarumUtilsItemList.default;
     }, function (_flarumHelpersListItems) {
       listItems = _flarumHelpersListItems.default;
+    }, function (_flarumComponentsFeedBack) {
+      FeedBack = _flarumComponentsFeedBack.default;
     }],
     execute: function () {
       HeaderSecondary = function (_Component) {
@@ -22345,7 +22472,9 @@ System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flaru
                   icon: app.locale === locale ? 'check' : true,
                   onclick: function onclick() {
                     if (app.session.user) {
-                      app.session.user.savePreferences({ locale: locale }).then(function () {
+                      app.session.user.savePreferences({
+                        locale: locale
+                      }).then(function () {
                         return window.location.reload();
                       });
                     } else {
@@ -22365,6 +22494,14 @@ System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flaru
                 buttonClassName: 'Button Button--link'
               }), 20);
             }
+
+            items.add('FeedBack', Button.component({
+              children: "反馈",
+              className: 'Button Button--link',
+              onclick: function onclick() {
+                return app.modal.show(new FeedBack());
+              }
+            }), 0);
 
             if (app.session.user) {
               items.add('notifications', NotificationsDropdown.component(), 10);

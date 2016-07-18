@@ -83,6 +83,7 @@ class PostReplyHandler
             $discussion->id,
             array_get($command->data, 'attributes.content'),
             $actor->id,
+            (bool)$command->isStart,
             $command->ipAddress
         );
 

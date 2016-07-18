@@ -69,7 +69,7 @@ class CreatePostController extends AbstractCreateController
         }
 
         $post = $this->bus->dispatch(
-            new PostReply($discussionId, $actor, $data, $ipAddress)
+            new PostReply($discussionId, $actor, $data,false, $ipAddress)
         );
 
         // After replying, we assume that the user has seen all of the posts

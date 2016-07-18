@@ -147,7 +147,9 @@ export default class DiscussionPage extends Page {
    */
   requestParams() {
     return {
-      page: {near: this.near}
+      page: {
+        near: this.near
+      }
     };
   }
 
@@ -182,7 +184,10 @@ export default class DiscussionPage extends Page {
     // Set up the post stream for this discussion, along with the first page of
     // posts we want to display. Tell the stream to scroll down and highlight
     // the specific post that was routed to.
-    this.stream = new PostStream({discussion, includedPosts});
+    this.stream = new PostStream({
+      discussion,
+      includedPosts
+    });
     this.stream.on('positionChanged', this.positionChanged.bind(this));
     this.stream.goToNumber(m.route.param('near') || (includedPosts[0] && includedPosts[0].number()), true);
   }
@@ -250,8 +255,7 @@ export default class DiscussionPage extends Page {
       PostStreamScrubber.component({
         stream: this.stream,
         className: 'App-titleControl'
-      }),
-      -100
+      }), -100
     );
 
     return items;
@@ -279,7 +283,9 @@ export default class DiscussionPage extends Page {
     // If the user hasn't read past here before, then we'll update their read
     // state and redraw.
     if (app.session.user && endNumber > (discussion.readNumber() || 0)) {
-      discussion.save({readNumber: endNumber});
+      discussion.save({
+        readNumber: endNumber
+      });
       m.redraw();
     }
   }
