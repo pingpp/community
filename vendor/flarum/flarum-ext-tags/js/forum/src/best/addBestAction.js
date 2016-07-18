@@ -13,7 +13,7 @@ export default function() {
       console.log(window.currbestId);
 
     let isBest  = post.data.attributes.isBest;
-    if ((window.currbestId == 0 || isBest)&&
+    if ((window.currbestId == 0 || isBest)&&!window.currIsArticle&&
         post.data.attributes.isStart==false&&
         window.currdiscussion.data.attributes.startUserId == app.session.user.id()){
 
