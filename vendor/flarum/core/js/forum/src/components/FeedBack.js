@@ -73,9 +73,9 @@ export default class FeedBack extends Modal {
         () => window.location.reload(),
         this.loaded.bind(this)
       );*/
-    $.post("", {}).then(function(data, code) {
+      $.post("", {}).then(function(data, code) {
 
-    })
+      })
   }
 
   onerror(error) {

@@ -19,7 +19,7 @@ export default function() {
 
     items.add('article', LinkButton.component({
       icon: 'th-large',
-      children: "文章分享",
+      children: "所有文章",
       href: app.route('article',{ article: 1})
     }), 100);
 

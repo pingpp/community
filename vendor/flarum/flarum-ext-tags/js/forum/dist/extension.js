@@ -295,7 +295,7 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
 
       items.add('article', LinkButton.component({
         icon: 'th-large',
-        children: "文章分享",
+        children: "所有文章",
         href: app.route('article', { article: 1 })
       }), 100);
 

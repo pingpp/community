@@ -61,13 +61,11 @@ export default class HeaderSecondary extends Component {
       }), 20);
     }
 
-    items.add('FeedBack',
-      Button.component({
-        children: "反馈",
-        className: 'Button Button--link',
-        onclick: () => app.modal.show(new FeedBack())
-      }), 0
-    );
+    items.add('FeedBack', Button.component({
+      children: "反馈",
+      className: 'Button Button--link',
+      onclick: () => app.modal.show(new FeedBack())
+    }), 0);
 
     if (app.session.user) {
       items.add('notifications', NotificationsDropdown.component(), 10);

@@ -33,6 +33,7 @@ return function (Dispatcher $events) {
 
     $events->subscribe(bestListener\AddApiAttributes::class);
     $events->subscribe(bestListener\CreatePostWhenDiscussionsBest::class);
-    //$events->subscribe(Listener\PinStickiedDiscussionsToTop::class);
     $events->subscribe(bestListener\SaveBestToDatabase::class);
+    
+    
 };
