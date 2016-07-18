@@ -1,6 +1,8 @@
 import Modal from 'flarum/components/Modal';
 import Button from 'flarum/components/Button';
-import { slug } from 'flarum/utils/string';
+import {
+  slug
+} from 'flarum/utils/string';
 
 import tagLabel from 'flarum/tags/helpers/tagLabel';
 
@@ -20,7 +22,6 @@ export default class EditTagModal extends Modal {
     this.color = m.prop(this.tag.color() || '');
     this.isHidden = m.prop(this.tag.isHidden() || false);
     this.isArticle = m.prop(this.tag.isArticle() || false);
-    console.log(this.isArticle)
   }
 
   className() {
@@ -28,12 +29,10 @@ export default class EditTagModal extends Modal {
   }
 
   title() {
-    return this.name()
-      ? tagLabel({
-        name: this.name,
-        color: this.color
-      })
-      : app.translator.trans('flarum-tags.admin.edit_tag.title');
+    return this.name() ? tagLabel({
+      name: this.name,
+      color: this.color
+    }) : app.translator.trans('flarum-tags.admin.edit_tag.title');
   }
 
   content() {

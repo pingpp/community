@@ -16,6 +16,8 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Flarum\Tags\best\Access as bestAccess;
 use Flarum\Tags\best\Listener as bestListener;
 
+use Flarum\Tags\FeedBack\Listener as FeedBackListener;
+
 return function (Dispatcher $events) {
     $events->subscribe(Listener\AddClientAssets::class);
     $events->subscribe(Listener\AddDiscussionTagsRelationship::class);
@@ -35,5 +37,5 @@ return function (Dispatcher $events) {
     $events->subscribe(bestListener\CreatePostWhenDiscussionsBest::class);
     $events->subscribe(bestListener\SaveBestToDatabase::class);
     
-    
+    $events->subscribe(FeedBackListener\AddFeedBackApi::class);
 };

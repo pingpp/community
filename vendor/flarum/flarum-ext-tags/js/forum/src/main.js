@@ -16,6 +16,8 @@ import addTagComposer from 'flarum/tags/addTagComposer';
 import Post from 'flarum/models/Post';
 import addBestAction from 'flarum/tags/best/addBestAction';
 
+import FeedBack from 'flarum/tags/models/FeedBack';
+
 app.initializers.add('flarum-tags', function(app) {
   /*app.routes.tags = {
     path: '/tags',
@@ -36,13 +38,10 @@ app.initializers.add('flarum-tags', function(app) {
     tags: tag.slug()
   });
 
-  app.route.tag = tag => app.route('tag', {
-    tags: tag.slug()
-  });
-
   app.postComponents.discussionTagged = DiscussionTaggedPost;
 
   app.store.models.tags = Tag;
+  app.store.models.FeedBack = FeedBack;
 
   Discussion.prototype.tags = Model.hasMany('tags');
   Discussion.prototype.canTag = Model.attribute('canTag');

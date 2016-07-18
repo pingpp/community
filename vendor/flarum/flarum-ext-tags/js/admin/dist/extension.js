@@ -652,7 +652,6 @@ System.register('flarum/tags/components/EditTagModal', ['flarum/components/Modal
             this.color = m.prop(this.tag.color() || '');
             this.isHidden = m.prop(this.tag.isHidden() || false);
             this.isArticle = m.prop(this.tag.isArticle() || false);
-            console.log(this.isArticle);
           }
         }, {
           key: 'className',
@@ -1281,6 +1280,40 @@ System.register('flarum/tags/main', ['flarum/tags/models/Tag', 'flarum/tags/addT
         addTagsHomePageOption();
         addTagChangePermission();
       });
+    }
+  };
+});;
+'use strict';
+
+System.register('flarum/tags/models/FeedBack', ['flarum/Model', 'flarum/utils/mixin'], function (_export, _context) {
+  "use strict";
+
+  var Model, mixin, FeedBack;
+  return {
+    setters: [function (_flarumModel) {
+      Model = _flarumModel.default;
+    }, function (_flarumUtilsMixin) {
+      mixin = _flarumUtilsMixin.default;
+    }],
+    execute: function () {
+      FeedBack = function (_mixin) {
+        babelHelpers.inherits(FeedBack, _mixin);
+
+        function FeedBack() {
+          babelHelpers.classCallCheck(this, FeedBack);
+          return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FeedBack).apply(this, arguments));
+        }
+
+        return FeedBack;
+      }(mixin(Model, {
+
+        id: Model.attribute('user_id'),
+        text: Model.attribute('text'),
+        status: Model.attribute('status')
+
+      }));
+
+      _export('default', FeedBack);
     }
   };
 });;
