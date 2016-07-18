@@ -12,14 +12,14 @@ export default function() {
     if (post.isHidden() || !post.canLike()) return;
 
     console.log("window.currbestId:" + window.currbestId);
-    console.log(post.data.relationships.discussion)
-    console.log(app.store.getBy('discussion', 'id', post.data.relationships.discussion.data.id))
 
+    console.log(post.data.relationships.discussion)
     let isLiked = app.session.user && post.likes().some(user => user === app.session.user);
 
     console.log(post.data.id)
 
     if (window.currbestId == 0 || window.currbestId == post.data.id) {
+
       var text = "采纳答案";
       if (window.currbestId == post.data.id) {
         text = "取消采纳"

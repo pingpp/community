@@ -378,6 +378,11 @@ System.register('flarum/tags/best/addBestAction', ['flarum/extend', 'flarum/app'
 
       console.log(post.data.id);
 
+<<<<<<< HEAD
+=======
+      console.log(app.composer.component.discussion);
+
+>>>>>>> 0b2315f00db62ee238176a7943082957f883bd0b
       if (window.currbestId == 0 || window.currbestId == post.data.id) {
         var text = "采纳为答案";
         if (window.currbestId == post.data.id) {
