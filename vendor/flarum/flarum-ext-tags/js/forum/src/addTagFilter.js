@@ -46,17 +46,22 @@ export default function() {
   // will let us filter discussions by tag.
   extend(IndexPage.prototype, 'params', function(params) {
     params.tags = m.route.param('tags');
+    params.article = m.route.param('article')
   });
 
   // Translate that parameter into a gambit appended to the search query.
   extend(DiscussionList.prototype, 'requestParams', function(params) {
     params.include.push('tags');
 
+
     var tag = app.store.getBy('tags', 'slug', this.props.params.tags);
     if (this.props.params.tags) {
       params.filter.q = (params.filter.q || '') + ' tag:' + this.props.params.tags;
     }
     if(tag!=undefined&&tag.isArticle()){
+      params.filter.q = (params.filter.q || '') +" is:article";
+    }
+    if (this.props.params.article==1){
       params.filter.q = (params.filter.q || '') +" is:article";
     }
   });

@@ -12,10 +12,11 @@
 namespace Flarum\Tags\best\Listener;
 
 use Flarum\Core\Access\AssertPermissionTrait;
-use Flarum\Event\DiscussionWillBeSaved;
+use Flarum\Event\PostWillBeSaved;
+use Flarum\Core\Discussion;
 
-use Flarum\Tags\best\Event\DiscussionWasStickied;
-use Flarum\Tags\best\Event\DiscussionWasUnstickied;
+use Flarum\Tags\best\Event\DiscussionWasBest;
+use Flarum\Tags\best\Event\DiscussionWasUnbest;
 
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -28,32 +29,40 @@ class SaveBestToDatabase
      */
     public function subscribe(Dispatcher $events)
     {
-        $events->listen(DiscussionWillBeSaved::class, [$this, 'whenDiscussionWillBeSaved']);
+        $events->listen(PostWillBeSaved::class, [$this, 'whenDiscussionWillBeSaved']);
     }
 
     /**
      * @param DiscussionWillBeSaved $event
      */
-    public function whenDiscussionWillBeSaved(DiscussionWillBeSaved $event)
+    public function whenDiscussionWillBeSaved(PostWillBeSaved $event)
     {
-        if (isset($event->data['attributes']['isSticky'])) {
-            $isSticky = (bool) $event->data['attributes']['isSticky'];
-            $discussion = $event->discussion;
+        if (isset($event->data['attributes']['Isbest'])&&isset($event->data['attributes']['DiscussionId'])) {
+            $isbest = (bool) $event->data['attributes']['Isbest'];
+            $DiscussionId = (int)$event->data['attributes']['DiscussionId'];
+            $discussion = Discussion::find($DiscussionId);
             $actor = $event->actor;
 
-            $this->assertCan($actor, 'sticky', $discussion);
-
-            if ((bool) $discussion->is_sticky === $isSticky) {
+            if ($actor->id!=$discussion->start_user_id){
                 return;
             }
 
-            $discussion->is_sticky = $isSticky;
+            $post = $event->post;
 
-            $discussion->raise(
-                $discussion->is_sticky
-                    ? new DiscussionWasStickied($discussion, $actor)
-                    : new DiscussionWasUnstickied($discussion, $actor)
-            );
+            if ($isbest){
+                $discussion->best_id = $post->id;
+            }else{
+                $discussion->best_id = 0;
+            }
+
+            $discussion->save();
+            $post->is_best = $isbest;
+
+            if ($isbest) {
+                $post->raise(new DiscussionWasBest($post, $actor));
+            } else {
+                $post->raise(new DiscussionWasUnbest($post, $actor));
+            }
         }
     }
 }

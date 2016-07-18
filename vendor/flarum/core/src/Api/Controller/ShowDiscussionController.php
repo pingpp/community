@@ -107,7 +107,7 @@ class ShowDiscussionController extends AbstractResourceController
      */
     private function loadPostIds(Discussion $discussion, User $actor)
     {
-        return $discussion->postsVisibleTo($actor)->orderBy('time')->lists('id')->all();
+        return $discussion->postsVisibleTo($actor)->orderBy('is_start','desc')->orderBy('is_best','desc')->orderBy('time','asc')->lists('id')->all();
     }
 
     /**
@@ -161,7 +161,7 @@ class ShowDiscussionController extends AbstractResourceController
     {
         $query = $discussion->postsVisibleTo($actor);
 
-        $query->orderBy('time')->skip($offset)->take($limit)->with($include);
+        $query->orderBy('is_start','desc')->orderBy('is_best','desc')->orderBy('time','asc')->skip($offset)->take($limit)->with($include);
 
         return $query->get()->all();
     }

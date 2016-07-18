@@ -43,11 +43,11 @@ export default function() {
   extend(DiscussionHero.prototype, 'items', function(items) {
     const tags = this.props.discussion.tags();
 
-    console.log(this.props.discussion.data.attributes.bestId);
     window.currbestId = this.props.discussion.data.attributes.bestId;
+    window.currdiscussion = this.props.discussion;
+
     if (tags && tags.length) {
       window.currIsArticle = tags[0].isArticle();
-      console.log(window.currIsArticle);
       items.add('tags', tagsLabel(tags, {
         link: true
       }), 5);

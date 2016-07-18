@@ -1,25 +1,16 @@
 <?php
 
-/*
- * This file is part of Flarum.
- *
- * (c) Toby Zerner <toby.zerner@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Flarum\Tags\best\Event;
 
-use Flarum\Core\Post;
+use Flarum\Core\Discussion;
 use Flarum\Core\User;
 
-class PostWasUnliked
+class DiscussionWasUnbest
 {
     /**
-     * @var Post
+     * @var Discussion
      */
-    public $post;
+    public $discussion;
 
     /**
      * @var User
@@ -27,12 +18,13 @@ class PostWasUnliked
     public $user;
 
     /**
-     * @param Post $post
+     * @param Discussion $discussion
      * @param User $user
      */
-    public function __construct(Post $post, User $user)
+    public function __construct(Discussion $discussion, User $user)
     {
-        $this->post = $post;
+        $this->discussion = $discussion;
         $this->user = $user;
     }
 }
+

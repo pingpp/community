@@ -9,19 +9,16 @@ export default function() {
   extend(CommentPost.prototype, 'actionItems', function(items) {
     const post = this.props.post;
 
-    if (post.isHidden() || !post.canLike()) return;
+    if (post.isHidden()) return;
+      console.log(window.currbestId);
 
-    console.log("window.currbestId:" + window.currbestId);
-
-    console.log(post.data.relationships.discussion)
-    let isLiked = app.session.user && post.likes().some(user => user === app.session.user);
-
-    console.log(post.data.id)
-
-    if (window.currbestId == 0 || window.currbestId == post.data.id) {
+    let isBest  = post.data.attributes.isBest;
+    if ((window.currbestId == 0 || isBest)&&
+        post.data.attributes.isStart==false&&
+        window.currdiscussion.data.attributes.startUserId == app.session.user.id()){
 
       var text = "采纳答案";
-      if (window.currbestId == post.data.id) {
+      if (isBest) {
         text = "取消采纳"
       };
 
@@ -30,33 +27,15 @@ export default function() {
           children: text,
           className: 'Button Button--link',
           onclick: () => {
-            isLiked = !isLiked;
-
             post.save({
-              isLiked
+              "DiscussionId":window.currdiscussion.data.id,
+              "Isbest":!isBest
+            }).then(() => {
+                location.reload()
             });
-
-            // We've saved the fact that we do or don't like the post, but in order
-            // to provide instantaneous feedback to the user, we'll need to add or
-            // remove the like from the relationship data manually.
-            const data = post.data.relationships.likes.data;
-            data.some((like, i) => {
-              if (like.id === app.session.user.id()) {
-                data.splice(i, 1);
-                return true;
-              }
-            });
-
-            if (isLiked) {
-              data.unshift({
-                type: 'users',
-                id: app.session.user.id()
-              });
-            }
           }
         })
       );
     }
-
   });
 }

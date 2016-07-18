@@ -171,6 +171,7 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
     // will let us filter discussions by tag.
     extend(IndexPage.prototype, 'params', function (params) {
       params.tags = m.route.param('tags');
+      params.article = m.route.param('article');
     });
 
     // Translate that parameter into a gambit appended to the search query.
@@ -182,6 +183,9 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
         params.filter.q = (params.filter.q || '') + ' tag:' + this.props.params.tags;
       }
       if (tag != undefined && tag.isArticle()) {
+        params.filter.q = (params.filter.q || '') + " is:article";
+      }
+      if (this.props.params.article == 1) {
         params.filter.q = (params.filter.q || '') + " is:article";
       }
     });
@@ -243,11 +247,11 @@ System.register('flarum/tags/addTagLabels', ['flarum/extend', 'flarum/components
     extend(DiscussionHero.prototype, 'items', function (items) {
       var tags = this.props.discussion.tags();
 
-      console.log(this.props.discussion.data.attributes.bestId);
       window.currbestId = this.props.discussion.data.attributes.bestId;
+      window.currdiscussion = this.props.discussion;
+
       if (tags && tags.length) {
         window.currIsArticle = tags[0].isArticle();
-        console.log(window.currIsArticle);
         items.add('tags', tagsLabel(tags, {
           link: true
         }), 5);
@@ -292,7 +296,7 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
       items.add('article', LinkButton.component({
         icon: 'th-large',
         children: "文章分享",
-        href: app.route('article')
+        href: app.route('article', { article: 1 })
       }), 100);
 
       if (app.current instanceof TagsPage) return;
@@ -364,28 +368,14 @@ System.register('flarum/tags/best/addBestAction', ['flarum/extend', 'flarum/app'
     extend(CommentPost.prototype, 'actionItems', function (items) {
       var post = this.props.post;
 
-      if (post.isHidden() || !post.canLike()) return;
+      if (post.isHidden()) return;
+      console.log(window.currbestId);
 
-      console.log("window.currbestId:" + window.currbestId);
+      var isBest = post.data.attributes.isBest;
+      if ((window.currbestId == 0 || isBest) && post.data.attributes.isStart == false && window.currdiscussion.data.attributes.startUserId == app.session.user.id()) {
 
-      console.log(post.data.relationships.discussion);
-
-      console.log(app.store.getBy('discussion', 'id', post.data.relationships.discussion.data.id));
-
-      var isLiked = app.session.user && post.likes().some(function (user) {
-        return user === app.session.user;
-      });
-
-      console.log(post.data.id);
-
-<<<<<<< HEAD
-=======
-      console.log(app.composer.component.discussion);
-
->>>>>>> 0b2315f00db62ee238176a7943082957f883bd0b
-      if (window.currbestId == 0 || window.currbestId == post.data.id) {
-        var text = "采纳为答案";
-        if (window.currbestId == post.data.id) {
+        var text = "采纳答案";
+        if (isBest) {
           text = "取消采纳";
         };
 
@@ -393,29 +383,12 @@ System.register('flarum/tags/best/addBestAction', ['flarum/extend', 'flarum/app'
           children: text,
           className: 'Button Button--link',
           onclick: function onclick() {
-            isLiked = !isLiked;
-
             post.save({
-              isLiked: isLiked
+              "DiscussionId": window.currdiscussion.data.id,
+              "Isbest": !isBest
+            }).then(function () {
+              location.reload();
             });
-
-            // We've saved the fact that we do or don't like the post, but in order
-            // to provide instantaneous feedback to the user, we'll need to add or
-            // remove the like from the relationship data manually.
-            var data = post.data.relationships.likes.data;
-            data.some(function (like, i) {
-              if (like.id === app.session.user.id()) {
-                data.splice(i, 1);
-                return true;
-              }
-            });
-
-            if (isLiked) {
-              data.unshift({
-                type: 'users',
-                id: app.session.user.id()
-              });
-            }
           }
         }));
       }
@@ -1345,17 +1318,25 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
     execute: function () {
 
       app.initializers.add('flarum-tags', function (app) {
-        app.routes.tags = {
+        /*app.routes.tags = {
           path: '/tags',
           component: TagsPage.component()
-        };
+        };*/
+
         app.routes.tag = {
           path: '/t/:tags',
           component: IndexPage.component()
         };
+
         app.routes.article = {
-          path: '/article',
+          path: '/article/:article',
           component: IndexPage.component()
+        };
+
+        app.route.article = function (tag) {
+          return app.route('tag', {
+            tags: tag.slug()
+          });
         };
 
         app.route.tag = function (tag) {

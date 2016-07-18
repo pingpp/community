@@ -20,7 +20,7 @@ export default function() {
     items.add('article', LinkButton.component({
       icon: 'th-large',
       children: "文章分享",
-      href: app.route('article')
+      href: app.route('article',{ article: 1})
     }), 100);
 
     if (app.current instanceof TagsPage) return;

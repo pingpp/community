@@ -17,18 +17,24 @@ import Post from 'flarum/models/Post';
 import addBestAction from 'flarum/tags/best/addBestAction';
 
 app.initializers.add('flarum-tags', function(app) {
-  app.routes.tags = {
+  /*app.routes.tags = {
     path: '/tags',
     component: TagsPage.component()
-  };
+  };*/
+
   app.routes.tag = {
     path: '/t/:tags',
     component: IndexPage.component()
   };
+
   app.routes.article = {
-    path: '/article',
+    path: '/article/:article',
     component: IndexPage.component()
   };
+
+  app.route.article = tag => app.route('tag', {
+    tags: tag.slug()
+  });
 
   app.route.tag = tag => app.route('tag', {
     tags: tag.slug()
