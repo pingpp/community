@@ -39,8 +39,8 @@
         "flarum/flarum-ext-tags": "^0.1.0",
         "jsthon/flarum-ext-simplified-chinese": "^0.1.0@beta",
         "asyou/search": "^0.1.0@beta",
-        "go-wyvern/pingxx-account": "dev-master",
-        "flagrow/flarum-ext-image-upload": "^0.2.3"
+        "flagrow/flarum-ext-image-upload": "^0.2.3",
+        "go-wyvern/pingxx-account": "dev-master"
     },
     "require-dev": {
         "franzl/studio": "^0.10.0"

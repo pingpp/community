@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2fa56a1578d5aa5926660a2b38c2fb02",
-    "content-hash": "ddf57872c333b305e7626e79ec64895b",
+    "hash": "c1ea4f20cd6fe1bb73a43ef4e690fa99",
+    "content-hash": "a44ab049dd05315098476a8cf3e3a46c",
     "packages": [
         {
             "name": "asyou/search",
@@ -1825,12 +1825,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/go-wyvern/pingxx-account.git",
-                "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0"
+                "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
-                "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
+                "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/07b0b746d6b8e223ad4263f05565ccd41709d703",
+                "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703",
                 "shasum": ""
             },
             "require": {
@@ -1871,7 +1871,7 @@
             "keywords": [
                 "account"
             ],
-            "time": "2016-07-06 09:03:26"
+            "time": "2016-07-19 01:39:57"
         },
         {
             "name": "guzzle/guzzle",
