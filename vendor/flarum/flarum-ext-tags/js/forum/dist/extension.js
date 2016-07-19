@@ -158,11 +158,7 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
         if (color) {
           items.get('newDiscussion').props.style = { backgroundColor: color };
         }
-        if (tag.isArticle()) {
-          $(".IndexPage-newDiscussion .Button-label").text("分享文章");
-        } else {
-          $(".IndexPage-newDiscussion .Button-label").text("新的问题");
-        }
+
         window.isArticle = tag.isArticle();
       }
     });
@@ -172,6 +168,11 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
     extend(IndexPage.prototype, 'params', function (params) {
       params.tags = m.route.param('tags');
       params.article = m.route.param('article');
+      if (m.route.param('article') != 1) {
+        window.ToArticle = false;
+      } else {
+        window.ToArticle = true;
+      }
     });
 
     // Translate that parameter into a gambit appended to the search query.
@@ -314,7 +315,10 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
           active = currentTag.parent() === tag;
         }
 
-        items.add('tag' + tag.id(), TagLinkButton.component({ tag: tag, params: params, active: active }), -10);
+        console.log(window.ToArticle);
+        if (window.ToArticle == tag.isArticle()) {
+          items.add('tag' + tag.id(), TagLinkButton.component({ tag: tag, params: params, active: active }), -10);
+        }
       };
 
       sortTags(tags).filter(function (tag) {
@@ -1001,6 +1005,7 @@ System.register('flarum/tags/components/TagLinkButton', ['flarum/components/Link
             var tag = props.tag;
 
             props.params.tags = tag ? tag.slug() : 'untagged';
+            props.params.article = tag.isArticle() ? 1 : 0;
             props.href = app.route('tag', props.params);
             props.children = tag ? tag.name() : app.translator.trans('flarum-tags.forum.index.untagged_link');
           }
@@ -1326,7 +1331,7 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
         };*/
 
         app.routes.tag = {
-          path: '/t/:tags',
+          path: '/t/:tags/:article',
           component: IndexPage.component()
         };
 

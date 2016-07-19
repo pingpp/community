@@ -52,7 +52,7 @@ class AddClientAssets
      */
     public function addRoutes(ConfigureForumRoutes $event)
     {
-        $event->get('/t/{slug}', 'tag');
+        $event->get('/t/{slug}/{is}', 'tag');
         $event->get('/article/{is}', 'is');
         $event->get('/tags', 'tags');
     }

@@ -33,12 +33,8 @@ export default function() {
       if (color) {
         items.get('newDiscussion').props.style = {backgroundColor: color};
       }
-      if(tag.isArticle()){
-        $(".IndexPage-newDiscussion .Button-label").text("分享文章")
-      }else{
-        $(".IndexPage-newDiscussion .Button-label").text("新的问题")
-      }
-      window.isArticle = tag.isArticle()
+
+      window.isArticle = tag.isArticle();
     }
   });
 
@@ -47,12 +43,16 @@ export default function() {
   extend(IndexPage.prototype, 'params', function(params) {
     params.tags = m.route.param('tags');
     params.article = m.route.param('article')
+    if (m.route.param('article')!=1){
+      window.ToArticle = false;
+    }else{
+      window.ToArticle = true;
+    }
   });
 
   // Translate that parameter into a gambit appended to the search query.
   extend(DiscussionList.prototype, 'requestParams', function(params) {
     params.include.push('tags');
-
 
     var tag = app.store.getBy('tags', 'slug', this.props.params.tags);
     if (this.props.params.tags) {
