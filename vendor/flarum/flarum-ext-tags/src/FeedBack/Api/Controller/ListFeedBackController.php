@@ -18,7 +18,7 @@ use Tobscure\JsonApi\Document;
 
 use Flarum\Tags\FeedBack\Models\FeedBack;
 
-class CreateFeedBackController extends AbstractCreateController
+class ListFeedBackController extends AbstractCreateController
 {
     /**
      * {@inheritdoc}
@@ -43,14 +43,8 @@ class CreateFeedBackController extends AbstractCreateController
      */
     protected function data(ServerRequestInterface $request, Document $document)
     {
-        $data = array_get($request->getParsedBody(), 'data');
-        $actor = $request->getAttribute('actor');
-
-        $feedback = new FeedBack;
-        $feedback->user_id = $actor->id;
-        $feedback->text = $data["attributes"]["text"];
-        $feedback->save();
-        echo json_encode(array('code' => 1 ));
+        $feedbacks = FeedBack::orderBy('created_at',"desc")->get();
+        echo json_encode($feedbacks);
         exit(1);
     }
 }

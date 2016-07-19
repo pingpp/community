@@ -1134,6 +1134,309 @@ System.register('flarum/tags/components/TagsPage', ['flarum/components/Page', 'f
 });;
 'use strict';
 
+System.register('flarum/tags/feedback/addfeedbackPane', ['flarum/extend', 'flarum/components/AdminNav', 'flarum/components/AdminLinkButton', 'flarum/tags/feedback/components/FeedBackPage'], function (_export, _context) {
+    "use strict";
+
+    var extend, AdminNav, AdminLinkButton, FeedBackPage;
+
+    _export('default', function () {
+        app.routes.feedbacks = { path: '/feedbacks', component: FeedBackPage.component() };
+
+        app.extensionSettings['feedbacks'] = function () {
+            return m.route(app.route('feedbacks'));
+        };
+
+        extend(AdminNav.prototype, 'items', function (items) {
+            items.add('feedbacks', AdminLinkButton.component({
+                href: app.route('feedbacks'),
+                icon: 'users',
+                children: "意见反馈",
+                description: app.translator.trans('pingxx-account.admin.nav.users_text')
+            }));
+        });
+    });
+
+    return {
+        setters: [function (_flarumExtend) {
+            extend = _flarumExtend.extend;
+        }, function (_flarumComponentsAdminNav) {
+            AdminNav = _flarumComponentsAdminNav.default;
+        }, function (_flarumComponentsAdminLinkButton) {
+            AdminLinkButton = _flarumComponentsAdminLinkButton.default;
+        }, function (_flarumTagsFeedbackComponentsFeedBackPage) {
+            FeedBackPage = _flarumTagsFeedbackComponentsFeedBackPage.default;
+        }],
+        execute: function () {}
+    };
+});;
+'use strict';
+
+System.register('flarum/tags/feedback/components/FeedBackPage', ['flarum/components/Page', 'flarum/components/Button', 'flarum/utils/humanTime', 'flarum/helpers/icon', 'flarum/helpers/listItems', 'flarum/utils/ItemList'], function (_export, _context) {
+    "use strict";
+
+    var Page, Button, humanTime, icon, listItems, ItemList, FeedBackPage;
+    return {
+        setters: [function (_flarumComponentsPage) {
+            Page = _flarumComponentsPage.default;
+        }, function (_flarumComponentsButton) {
+            Button = _flarumComponentsButton.default;
+        }, function (_flarumUtilsHumanTime) {
+            humanTime = _flarumUtilsHumanTime.default;
+        }, function (_flarumHelpersIcon) {
+            icon = _flarumHelpersIcon.default;
+        }, function (_flarumHelpersListItems) {
+            listItems = _flarumHelpersListItems.default;
+        }, function (_flarumUtilsItemList) {
+            ItemList = _flarumUtilsItemList.default;
+        }],
+        execute: function () {
+            FeedBackPage = function (_Page) {
+                babelHelpers.inherits(FeedBackPage, _Page);
+
+                function FeedBackPage() {
+                    babelHelpers.classCallCheck(this, FeedBackPage);
+                    return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FeedBackPage).apply(this, arguments));
+                }
+
+                babelHelpers.createClass(FeedBackPage, [{
+                    key: 'init',
+                    value: function init() {
+                        babelHelpers.get(Object.getPrototypeOf(FeedBackPage.prototype), 'init', this).call(this);
+                        this.loading = true;
+
+                        this.page = 1;
+                        this.limit = 10;
+                        this.query = "";
+
+                        this.canprev = false;
+                        this.cannext = false;
+                        this.list = [];
+
+                        this.refresh();
+                    }
+                }, {
+                    key: 'refresh',
+                    value: function refresh() {
+                        var _this2 = this;
+
+                        return this.loadResults().then(function (results) {
+                            _this2.list = [];
+                            _this2.parseUsers(results);
+                        }, function () {
+                            _this2.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadResults',
+                    value: function loadResults() {
+                        return app.request({
+                            url: app.forum.attribute('apiUrl') + '/feedback',
+                            method: 'GET'
+                        });
+                    }
+                }, {
+                    key: 'parseUsers',
+                    value: function parseUsers(results) {
+                        [].push.apply(this.list, results);
+
+                        this.loading = false;
+
+                        //this.canprev = !!results.payload.links.prev;
+                        //this.cannext = !!results.payload.links.next;
+
+                        m.lazyRedraw();
+
+                        return results;
+                    }
+                }, {
+                    key: 'loadNext',
+                    value: function loadNext() {
+                        var _this3 = this;
+
+                        this.loading = true;
+                        this.page = this.page + 1;
+                        this.loadResults().then(function (results) {
+                            _this3.list = results;
+                            _this3.parseUsers(results);
+                        }, function () {
+                            _this3.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'loadPrev',
+                    value: function loadPrev() {
+                        var _this4 = this;
+
+                        this.loading = true;
+                        this.page = this.page - 1;
+                        this.loadResults().then(function (results) {
+                            _this4.listusers = [];
+                            _this4.parseUsers(results);
+                        }, function () {
+                            _this4.loading = false;
+                            m.redraw();
+                        });
+                    }
+                }, {
+                    key: 'view',
+                    value: function view() {
+                        var _this5 = this;
+
+                        return m(
+                            'div',
+                            { className: 'UsersPage' },
+                            m(
+                                'div',
+                                { className: 'UserPage-options' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'p',
+                                        null,
+                                        '反馈记录'
+                                    )
+                                )
+                            ),
+                            m(
+                                'div',
+                                { className: 'UserPage-users' },
+                                m(
+                                    'div',
+                                    { className: 'container' },
+                                    m(
+                                        'table',
+                                        { className: 'UserGrid' },
+                                        m(
+                                            'thead',
+                                            null,
+                                            m(
+                                                'th',
+                                                null,
+                                                '用户id'
+                                            ),
+                                            m(
+                                                'th',
+                                                null,
+                                                '反馈内容'
+                                            ),
+                                            m(
+                                                'th',
+                                                null,
+                                                '反馈时间'
+                                            )
+                                        ),
+                                        m(
+                                            'tbody',
+                                            null,
+                                            this.list.map(function (item) {
+                                                return m(
+                                                    'tr',
+                                                    null,
+                                                    m(
+                                                        'td',
+                                                        null,
+                                                        item.user_id
+                                                    ),
+                                                    m(
+                                                        'td',
+                                                        null,
+                                                        item.text
+                                                    ),
+                                                    m(
+                                                        'td',
+                                                        null,
+                                                        item.created_at
+                                                    )
+                                                );
+                                            })
+                                        )
+                                    ),
+                                    m(
+                                        'nav',
+                                        null,
+                                        this.canprev || this.cannext ? m(
+                                            'ul',
+                                            { 'class': 'pager' },
+                                            this.canprev ? m(
+                                                'li',
+                                                null,
+                                                m(
+                                                    'a',
+                                                    { onclick: function onclick() {
+                                                            _this5.loadPrev();
+                                                        } },
+                                                    '上一页'
+                                                )
+                                            ) : m(
+                                                'li',
+                                                { className: 'disabled' },
+                                                m(
+                                                    'a',
+                                                    null,
+                                                    '上一页'
+                                                )
+                                            ),
+                                            this.cannext ? m(
+                                                'li',
+                                                null,
+                                                m(
+                                                    'a',
+                                                    { onclick: function onclick() {
+                                                            _this5.loadNext();
+                                                        } },
+                                                    '下一页'
+                                                )
+                                            ) : m(
+                                                'li',
+                                                { className: 'disabled' },
+                                                m(
+                                                    'a',
+                                                    null,
+                                                    '下一页'
+                                                )
+                                            )
+                                        ) : ''
+                                    )
+                                )
+                            )
+                        );
+                    }
+                }, {
+                    key: 'ActiveUser',
+                    value: function ActiveUser(listuser) {
+                        var data = {
+                            isActivated: !listuser.isActivated()
+                        };
+                        console.log(listuser.isActivated());
+                        this.loading = true;
+                        app.request({
+                            url: app.forum.attribute('apiUrl') + '/user/' + listuser.id(),
+                            method: 'PATCH',
+                            data: data
+                        }).then(function () {
+                            window.location.reload();
+                        });
+                    }
+                }, {
+                    key: 'items',
+                    value: function items() {
+                        var items = new ItemList();
+                        items.add('search', this.search.render());
+                        return items;
+                    }
+                }]);
+                return FeedBackPage;
+            }(Page);
+
+            _export('default', FeedBackPage);
+        }
+    };
+});;
+'use strict';
+
 System.register('flarum/tags/helpers/tagIcon', [], function (_export, _context) {
   "use strict";
 
@@ -1251,10 +1554,10 @@ System.register('flarum/tags/helpers/tagsLabel', ['flarum/utils/extract', 'flaru
 });;
 'use strict';
 
-System.register('flarum/tags/main', ['flarum/tags/models/Tag', 'flarum/tags/addTagsPermissionScope', 'flarum/tags/addTagPermission', 'flarum/tags/addTagsPane', 'flarum/tags/addTagsHomePageOption', 'flarum/tags/addTagChangePermission'], function (_export, _context) {
+System.register('flarum/tags/main', ['flarum/tags/models/Tag', 'flarum/tags/addTagsPermissionScope', 'flarum/tags/addTagPermission', 'flarum/tags/addTagsPane', 'flarum/tags/addTagsHomePageOption', 'flarum/tags/addTagChangePermission', 'flarum/tags/feedback/addfeedbackPane'], function (_export, _context) {
   "use strict";
 
-  var Tag, addTagsPermissionScope, addTagPermission, addTagsPane, addTagsHomePageOption, addTagChangePermission;
+  var Tag, addTagsPermissionScope, addTagPermission, addTagsPane, addTagsHomePageOption, addTagChangePermission, addfeedbackPane;
   return {
     setters: [function (_flarumTagsModelsTag) {
       Tag = _flarumTagsModelsTag.default;
@@ -1268,6 +1571,8 @@ System.register('flarum/tags/main', ['flarum/tags/models/Tag', 'flarum/tags/addT
       addTagsHomePageOption = _flarumTagsAddTagsHomePageOption.default;
     }, function (_flarumTagsAddTagChangePermission) {
       addTagChangePermission = _flarumTagsAddTagChangePermission.default;
+    }, function (_flarumTagsFeedbackAddfeedbackPane) {
+      addfeedbackPane = _flarumTagsFeedbackAddfeedbackPane.default;
     }],
     execute: function () {
 
@@ -1279,6 +1584,8 @@ System.register('flarum/tags/main', ['flarum/tags/models/Tag', 'flarum/tags/addT
         addTagsPane();
         addTagsHomePageOption();
         addTagChangePermission();
+
+        addfeedbackPane();
       });
     }
   };

@@ -65,21 +65,12 @@ export default class FeedBack extends Modal {
 
   onsubmit(e) {
     e.preventDefault();
-
     this.loading = true;
-
-    console.log("22222")
-      /*app.session.login(email, password, {
-        errorHandler: this.onerror.bind(this)
-      }).then(
-        () => window.location.reload(),
-        this.loaded.bind(this)
-      );*/
     var data = {
       data: {
         "type": "feedback",
         "attributes": {
-          "text": "wwww",
+          "text": this.$('[name=text]').val(),
         }
       }
     }
@@ -93,25 +84,6 @@ export default class FeedBack extends Modal {
       () => window.location.reload(),
       this.loaded.bind(this)
     );
-
-    /*$.ajax("/api/feedback", {
-      type: "post",
-      contentType: "application/json",
-      data: JSON.stringify({
-        data: {
-          "type": "feedback",
-          "attributes": {
-            "text": "wwww",
-          }
-        }
-      }),
-      headers: {
-        "X-CSRF-Token": app.session.csrfToken
-      }
-    }).then(function(data, code) {
-      () => window.location.reload(),
-        this.loaded.bind(this)
-    })*/
 
   }
 

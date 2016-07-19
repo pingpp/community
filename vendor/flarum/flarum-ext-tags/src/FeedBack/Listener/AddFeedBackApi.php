@@ -26,6 +26,7 @@ class AddFeedBackApi
     public function configureApiRoutes(ConfigureApiRoutes $event)
     {
         $event->post('/feedback', 'feedback.create', Controller\CreateFeedBackController::class);
+        $event->get('/feedback', 'feedback.create', Controller\ListFeedBackController::class);
         //$event->post('/tags/order', 'tags.order', Controller\OrderTagsController::class);
         //$event->patch('/tags/{id}', 'tags.update', Controller\UpdateTagController::class);
         //$event->delete('/tags/{id}', 'tags.delete', Controller\DeleteTagController::class);

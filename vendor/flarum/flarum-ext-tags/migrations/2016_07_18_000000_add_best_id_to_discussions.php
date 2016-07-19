@@ -2,6 +2,6 @@
 
 use Flarum\Database\Migration;
 
-return Migration::addColumns('posts', [
+return Migration::addColumns('discussions', [
     'best_id' => ['integer', 'default' => 0]
 ]);

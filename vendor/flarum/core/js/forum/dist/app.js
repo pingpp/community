@@ -22095,21 +22095,12 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
           key: 'onsubmit',
           value: function onsubmit(e) {
             e.preventDefault();
-
             this.loading = true;
-
-            console.log("22222");
-            /*app.session.login(email, password, {
-              errorHandler: this.onerror.bind(this)
-            }).then(
-              () => window.location.reload(),
-              this.loaded.bind(this)
-            );*/
             var data = {
               data: {
                 "type": "feedback",
                 "attributes": {
-                  "text": "wwww"
+                  "text": this.$('[name=text]').val()
                 }
               }
             };
@@ -22122,25 +22113,6 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
             }).then(function () {
               return window.location.reload();
             }, this.loaded.bind(this));
-
-            /*$.ajax("/api/feedback", {
-              type: "post",
-              contentType: "application/json",
-              data: JSON.stringify({
-                data: {
-                  "type": "feedback",
-                  "attributes": {
-                    "text": "wwww",
-                  }
-                }
-              }),
-              headers: {
-                "X-CSRF-Token": app.session.csrfToken
-              }
-            }).then(function(data, code) {
-              () => window.location.reload(),
-                this.loaded.bind(this)
-            })*/
           }
         }, {
           key: 'onerror',
@@ -26560,12 +26532,12 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
 
                 case 13:
                   // Return
-                  if (_this3.value()) {
-                    m.route(_this3.getItem(_this3.index).find('a').attr('href'));
+                  /*if (this.value()) {
+                    m.route(this.getItem(this.index).find('a').attr('href'));
                   } else {
-                    _this3.clear();
+                    //this.clear();
                   }
-                  _this3.$('input').blur();
+                  this.$('input').blur();*/
                   break;
 
                 case 27:
@@ -26589,7 +26561,7 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
               search.searchTimeout = setTimeout(function () {
                 if (search.searched.indexOf(query) !== -1) return;
 
-                if (query.length >= 3) {
+                if (query.length >= 1) {
                   search.sources.map(function (source) {
                     if (!source.search) return;
 
@@ -26727,7 +26699,6 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                     key: 'search',
                     value: function search(query) {
 
-                        console.log(query);
                         this.results[query] = [];
 
                         var SearchEngine = this;
@@ -26742,20 +26713,7 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                     value: function view(query) {
                         var results = this.results[query] || [];
 
-                        return [m(
-                            'li',
-                            { className: 'Dropdown-header' },
-                            app.translator.trans('core.forum.search.discussions_heading')
-                        ), m(
-                            'li',
-                            null,
-                            LinkButton.component({
-                                icon: 'search',
-                                children: app.translator.trans('core.forum.search.all_discussions_button', { query: query }),
-                                href: app.route('index', { q: query })
-                            })
-                        ), results.map(function (data) {
-
+                        return [results.map(function (data) {
                             return m(
                                 'li',
                                 { className: 'DiscussionSearchResult', 'data-index': data.DocName + data.Id },
@@ -26765,6 +26723,16 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                                     m(
                                         'div',
                                         { className: 'DiscussionSearchResult-title' },
+                                        m(
+                                            'span',
+                                            { 'class': 'TagLabel  colored', style: 'color: rgb(232, 145, 0); background-color: rgb(232, 145, 0);' },
+                                            m(
+                                                'span',
+                                                { 'class': 'TagLabel-text' },
+                                                '帮助中心'
+                                            )
+                                        ),
+                                        '   ',
                                         highlight(data.Data.title, query)
                                     )
                                 )

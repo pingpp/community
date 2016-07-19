@@ -133,12 +133,12 @@ export default class Search extends Component {
             break;
 
           case 13: // Return
-            if (this.value()) {
+            /*if (this.value()) {
               m.route(this.getItem(this.index).find('a').attr('href'));
             } else {
-              this.clear();
+              //this.clear();
             }
-            this.$('input').blur();
+            this.$('input').blur();*/
             break;
 
           case 27: // Escape
@@ -161,7 +161,7 @@ export default class Search extends Component {
         search.searchTimeout = setTimeout(() => {
           if (search.searched.indexOf(query) !== -1) return;
 
-          if (query.length >= 3) {
+          if (query.length >= 1) {
             search.sources.map(source => {
               if (!source.search) return;
 

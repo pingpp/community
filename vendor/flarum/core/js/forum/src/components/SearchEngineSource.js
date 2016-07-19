@@ -8,7 +8,6 @@ export default class SearchEngineSource {
 
     search(query) {
 
-        console.log(query);
         this.results[query] = [];
 
         var SearchEngine = this
@@ -25,20 +24,15 @@ export default class SearchEngineSource {
         const results = this.results[query] || [];
 
         return [
-            <li className="Dropdown-header">{app.translator.trans('core.forum.search.discussions_heading')}</li>,
-            <li>
-                {LinkButton.component({
-                    icon: 'search',
-                    children: app.translator.trans('core.forum.search.all_discussions_button', {query}),
-                    href: app.route('index', {q: query})
-                })}
-            </li>,
             results.map(data => {
-
                 return (
                     <li className="DiscussionSearchResult" data-index={data.DocName + data.Id}>
                         <a href={"https://help.pingxx.com/article/"+data.Data.id} target="_blank">
-                            <div className="DiscussionSearchResult-title">{highlight(data.Data.title, query)}</div>
+                            <div className="DiscussionSearchResult-title">
+                                <span class="TagLabel  colored" style="color: rgb(232, 145, 0); background-color: rgb(232, 145, 0);">
+                                    <span class="TagLabel-text">帮助中心</span>
+                                </span> &nbsp;&nbsp;{highlight(data.Data.title, query)}
+                            </div>
                         </a>
                     </li>
                 );

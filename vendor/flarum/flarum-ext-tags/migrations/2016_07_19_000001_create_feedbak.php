@@ -9,6 +9,8 @@ return Migration::createTable(
         $table->increments('id');
         $table->integer('user_id')->unsigned();
         $table->string('text',255);
+        $table->dateTime('updated_at')->nullable();
+        $table->dateTime('created_at')->nullable();
         $table->integer('status')->unsigned();
     }
 );

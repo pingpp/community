@@ -5,6 +5,9 @@ import addTagsPane from 'flarum/tags/addTagsPane';
 import addTagsHomePageOption from 'flarum/tags/addTagsHomePageOption';
 import addTagChangePermission from 'flarum/tags/addTagChangePermission';
 
+import addfeedbackPane from 'flarum/tags/feedback/addfeedbackPane';
+
+
 app.initializers.add('flarum-tags', app => {
   app.store.models.tags = Tag;
 
@@ -13,4 +16,6 @@ app.initializers.add('flarum-tags', app => {
   addTagsPane();
   addTagsHomePageOption();
   addTagChangePermission();
+
+  addfeedbackPane();
 });
