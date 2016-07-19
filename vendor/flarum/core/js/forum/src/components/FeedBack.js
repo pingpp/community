@@ -16,7 +16,7 @@ export default class FeedBack extends Modal {
   init() {
     super.init();
 
-    //this.FeedBack = this.props.FeedBack || app.store.createRecord('FeedBack');
+    this.FeedBack = this.props.FeedBack || app.store.createRecord('FeedBack');
 
     this.text = "";
   }
@@ -75,9 +75,44 @@ export default class FeedBack extends Modal {
         () => window.location.reload(),
         this.loaded.bind(this)
       );*/
-    $.post("", {}).then(function(data, code) {
+    var data = {
+      data: {
+        "type": "feedback",
+        "attributes": {
+          "text": "wwww",
+        }
+      }
+    }
 
-    })
+    app.request({
+      url: app.forum.attribute('baseUrl') + '/api/feedback',
+      method: 'POST',
+      data,
+      errorHandler: this.onerror.bind(this)
+    }).then(
+      () => window.location.reload(),
+      this.loaded.bind(this)
+    );
+
+    /*$.ajax("/api/feedback", {
+      type: "post",
+      contentType: "application/json",
+      data: JSON.stringify({
+        data: {
+          "type": "feedback",
+          "attributes": {
+            "text": "wwww",
+          }
+        }
+      }),
+      headers: {
+        "X-CSRF-Token": app.session.csrfToken
+      }
+    }).then(function(data, code) {
+      () => window.location.reload(),
+        this.loaded.bind(this)
+    })*/
+
   }
 
   onerror(error) {

@@ -1283,10 +1283,10 @@ System.register('flarum/tags/helpers/tagsLabel', ['flarum/utils/extract', 'flaru
 });;
 'use strict';
 
-System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion', 'flarum/components/IndexPage', 'flarum/tags/models/Tag', 'flarum/tags/components/TagsPage', 'flarum/tags/components/DiscussionTaggedPost', 'flarum/tags/addTagList', 'flarum/tags/addTagFilter', 'flarum/tags/addTagLabels', 'flarum/tags/addTagControl', 'flarum/tags/addTagComposer', 'flarum/models/Post', 'flarum/tags/best/addBestAction'], function (_export, _context) {
+System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion', 'flarum/components/IndexPage', 'flarum/tags/models/Tag', 'flarum/tags/components/TagsPage', 'flarum/tags/components/DiscussionTaggedPost', 'flarum/tags/addTagList', 'flarum/tags/addTagFilter', 'flarum/tags/addTagLabels', 'flarum/tags/addTagControl', 'flarum/tags/addTagComposer', 'flarum/models/Post', 'flarum/tags/best/addBestAction', 'flarum/tags/models/FeedBack'], function (_export, _context) {
   "use strict";
 
-  var Model, Discussion, IndexPage, Tag, TagsPage, DiscussionTaggedPost, addTagList, addTagFilter, addTagLabels, addTagControl, addTagComposer, Post, addBestAction;
+  var Model, Discussion, IndexPage, Tag, TagsPage, DiscussionTaggedPost, addTagList, addTagFilter, addTagLabels, addTagControl, addTagComposer, Post, addBestAction, FeedBack;
   return {
     setters: [function (_flarumModel) {
       Model = _flarumModel.default;
@@ -1314,6 +1314,8 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
       Post = _flarumModelsPost.default;
     }, function (_flarumTagsBestAddBestAction) {
       addBestAction = _flarumTagsBestAddBestAction.default;
+    }, function (_flarumTagsModelsFeedBack) {
+      FeedBack = _flarumTagsModelsFeedBack.default;
     }],
     execute: function () {
 
@@ -1339,15 +1341,10 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
           });
         };
 
-        app.route.tag = function (tag) {
-          return app.route('tag', {
-            tags: tag.slug()
-          });
-        };
-
         app.postComponents.discussionTagged = DiscussionTaggedPost;
 
         app.store.models.tags = Tag;
+        app.store.models.FeedBack = FeedBack;
 
         Discussion.prototype.tags = Model.hasMany('tags');
         Discussion.prototype.canTag = Model.attribute('canTag');
@@ -1363,6 +1360,40 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
 
         addBestAction();
       });
+    }
+  };
+});;
+'use strict';
+
+System.register('flarum/tags/models/FeedBack', ['flarum/Model', 'flarum/utils/mixin'], function (_export, _context) {
+  "use strict";
+
+  var Model, mixin, FeedBack;
+  return {
+    setters: [function (_flarumModel) {
+      Model = _flarumModel.default;
+    }, function (_flarumUtilsMixin) {
+      mixin = _flarumUtilsMixin.default;
+    }],
+    execute: function () {
+      FeedBack = function (_mixin) {
+        babelHelpers.inherits(FeedBack, _mixin);
+
+        function FeedBack() {
+          babelHelpers.classCallCheck(this, FeedBack);
+          return babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(FeedBack).apply(this, arguments));
+        }
+
+        return FeedBack;
+      }(mixin(Model, {
+
+        id: Model.attribute('user_id'),
+        text: Model.attribute('text'),
+        status: Model.attribute('status')
+
+      }));
+
+      _export('default', FeedBack);
     }
   };
 });;
