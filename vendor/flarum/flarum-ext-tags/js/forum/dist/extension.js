@@ -372,7 +372,7 @@ System.register('flarum/tags/best/addBestAction', ['flarum/extend', 'flarum/app'
       console.log(window.currbestId);
 
       var isBest = post.data.attributes.isBest;
-      if ((window.currbestId == 0 || isBest) && !window.currIsArticle && post.data.attributes.isStart == false && window.currdiscussion.data.attributes.startUserId == app.session.user.id()) {
+      if ((window.currbestId == 0 || isBest) && !window.currIsArticle && post.data.attributes.isStart == false && app.session.user && window.currdiscussion.data.attributes.startUserId == app.session.user.id()) {
 
         var text = "采纳答案";
         if (isBest) {

@@ -26702,7 +26702,7 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                         this.results[query] = [];
 
                         var SearchEngine = this;
-                        return $.when($.get("http://localhost:1239/search?text=" + query)).then(function (data, ok) {
+                        return $.when($.get("http://192.168.24.43:1239/search?text=" + query)).then(function (data, ok) {
                             if (ok == "success") {
                                 SearchEngine.results[query] = data.Data;
                             }

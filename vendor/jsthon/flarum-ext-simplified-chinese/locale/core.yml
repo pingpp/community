@@ -161,10 +161,10 @@ core:
     # These translations are used by the composer when starting a discussion.
     composer_discussion:
       body_placeholder: 写点什么...
-      discard_confirmation: "问题还没有发布，确定要丢弃？"
-      submit_button: 发布问题
+      discard_confirmation: "还没有发布，确定要丢弃？"
+      submit_button: 发布
       title: => core.ref.start_a_discussion
-      title_placeholder: 问题标题
+      title_placeholder: 标题
 
     # These translations are used by the composer when editing a post.
     composer_edit:
@@ -223,7 +223,7 @@ core:
       admin_button: 管理后台
       log_in_link: => core.ref.log_in
       log_out_button: => core.ref.log_out
-      profile_button: 我的资料
+      profile_button: 和我相关
       search_placeholder: 搜索其实很简单
       settings_button: => core.ref.settings
       sign_up_link: => core.ref.sign_up
@@ -240,8 +240,8 @@ core:
     # These translations are used by the sorting control above the discussion list.
     index_sort:
       latest_button: 最新回复
-      newest_button: 近期问题
-      oldest_button: 历史问题
+      newest_button: 最新问题
+      oldest_button: 最旧问题
       relevance_button: 最佳匹配
       top_button: 热门问题
 
