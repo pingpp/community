@@ -37,6 +37,7 @@ class DiscussionBasicSerializer extends AbstractSerializer
         return [
             'title' => $discussion->title,
             'slug'  => $discussion->slug,
+            'praise_count' => (int)$discussion->praise_count
         ];
     }
 

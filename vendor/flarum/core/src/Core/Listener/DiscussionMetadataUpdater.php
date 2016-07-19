@@ -15,6 +15,10 @@ use Flarum\Event\PostWasDeleted;
 use Flarum\Event\PostWasHidden;
 use Flarum\Event\PostWasPosted;
 use Flarum\Event\PostWasRestored;
+use Flarum\Likes\Event\PostWasLiked;
+use Flarum\Likes\Event\PostWasUnliked;
+use Flarum\Tags\best\Event\PostWasbest;
+use Flarum\Tags\best\Event\PostWasUnbest;
 use Illuminate\Contracts\Events\Dispatcher;
 
 class DiscussionMetadataUpdater
@@ -28,6 +32,44 @@ class DiscussionMetadataUpdater
         $events->listen(PostWasDeleted::class, [$this, 'whenPostWasDeleted']);
         $events->listen(PostWasHidden::class, [$this, 'whenPostWasHidden']);
         $events->listen(PostWasRestored::class, [$this, 'whenPostWasRestored']);
+
+        $events->listen(PostWasLiked::class, [$this, 'whenPostWasLiked']);
+        $events->listen(PostWasUnliked::class, [$this, 'whenPostWasUnliked']);
+
+        $events->listen(PostWasbest::class, [$this, 'whenPostWasbest']);
+        $events->listen(PostWasUnbest::class, [$this, 'whenPostWasUnbest']);
+    }
+
+    public function whenPostWasbest(PostWasbest $event)
+    {
+        if (!$event->post->discussion->is_article) {
+            $event->post->agree_count += 1;
+            $event->post->save();
+        }
+    }
+
+    public function whenPostWasUnbest(PostWasUnbest $event)
+    {
+        if (!$event->post->discussion->is_article) {
+            $event->post->agree_count += -1;
+            $event->post->save();
+        }
+    }
+
+    public function whenPostWasLiked(PostWasLiked $event)
+    {
+        $event->post->discussion->praise_count += 1;
+        $event->post->discussion->save();
+        $event->post->praise_count += 1;
+        $event->post->save();
+    }
+
+    public function whenPostWasUnliked(PostWasUnliked $event)
+    {
+        $event->post->discussion->praise_count += -1;
+        $event->post->discussion->save();
+        $event->post->praise_count += -1;
+        $event->post->save();
     }
 
     /**
