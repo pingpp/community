@@ -130,7 +130,8 @@ export default class LogInModal extends Modal {
 
   onerror(error) {
     if (error.status === 401) {
-      error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+      // error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+      error.alert.props.children = JSON.parse(error.responseText).errors[0].message;
     }
 
     super.onerror(error);
