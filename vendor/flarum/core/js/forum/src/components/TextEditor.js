@@ -32,7 +32,7 @@ export default class TextEditor extends Component {
           oninput={m.withAttr('value', this.oninput.bind(this))}
           placeholder={this.props.placeholder || ''}
           disabled={!!this.props.disabled}
-          value={this.value()}/>
+          value={this.value()} style="height: 189px;"/>
 
         <ul className="TextEditor-controls Composer-footer">
           {listItems(this.controlItems().toArray())}

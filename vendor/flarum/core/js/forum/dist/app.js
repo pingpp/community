@@ -19966,7 +19966,9 @@ System.register('flarum/components/Composer', ['flarum/Component', 'flarum/utils
 
             var paddingBottom = visible ? this.computedHeight() - parseInt($('#app').css('padding-bottom'), 10) : 0;
 
-            $('#content').css({ paddingBottom: paddingBottom });
+            $('#content').css({
+              paddingBottom: paddingBottom
+            });
           }
         }, {
           key: 'isFullScreen',
@@ -20032,12 +20034,20 @@ System.register('flarum/components/Composer', ['flarum/Component', 'flarum/utils
             var newHeight = $composer.outerHeight();
 
             if (oldPosition === Composer.PositionEnum.HIDDEN) {
-              $composer.css({ bottom: -newHeight, height: newHeight });
+              $composer.css({
+                bottom: -newHeight,
+                height: newHeight
+              });
             } else {
-              $composer.css({ height: oldHeight });
+              $composer.css({
+                height: oldHeight
+              });
             }
 
-            $composer.animate({ bottom: 0, height: newHeight }, 'fast', function () {
+            $composer.animate({
+              bottom: 0,
+              height: newHeight
+            }, 'fast', function () {
               return _this3.component.focus();
             });
 
@@ -20078,7 +20088,9 @@ System.register('flarum/components/Composer', ['flarum/Component', 'flarum/utils
             // Animate the composer sliding down off the bottom edge of the viewport.
             // Only when the animation is completed, update the Composer state flag and
             // other elements on the page.
-            $composer.stop(true).animate({ bottom: -$composer.height() }, 'fast', function () {
+            $composer.stop(true).animate({
+              bottom: -$composer.height()
+            }, 'fast', function () {
               _this4.position = Composer.PositionEnum.HIDDEN;
               _this4.clear();
               m.redraw();
@@ -22510,7 +22522,7 @@ System.register('flarum/components/HeaderSecondary', ['flarum/Component', 'flaru
               onclick: function onclick() {
                 return app.modal.show(new FeedBack());
               }
-            }), 0);
+            }), 20);
 
             if (app.session.user) {
               items.add('notifications', NotificationsDropdown.component(), 10);
@@ -22744,23 +22756,27 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
             var items = new ItemList();
             var canStartDiscussion = app.forum.attribute('canStartDiscussion') || !app.session.user;
 
-            items.add('newDiscussion', Button.component({
-              children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
-              icon: 'edit',
-              className: 'Button Button--primary IndexPage-newDiscussion',
-              itemClassName: 'App-primaryControl',
-              onclick: this.newDiscussion.bind(this),
-              disabled: !canStartDiscussion
-            }));
-
-            items.add('newArticle', Button.component({
-              children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
-              icon: 'edit',
-              className: 'Button Button--primary IndexPage-newDiscussion',
-              itemClassName: 'App-primaryControl',
-              onclick: this.newDiscussion2.bind(this),
-              disabled: !canStartDiscussion
-            }));
+            if (window.ToArticle) {
+              window.isArticle = true;
+              items.add('newDiscussion', Button.component({
+                children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_article_button' : 'core.forum.index.cannot_start_discussion_button'),
+                icon: 'edit',
+                className: 'Button Button--primary IndexPage-newDiscussion',
+                itemClassName: 'App-primaryControl',
+                onclick: this.newDiscussion.bind(this),
+                disabled: !canStartDiscussion
+              }));
+            } else {
+              window.isArticle = false;
+              items.add('newDiscussion', Button.component({
+                children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
+                icon: 'edit',
+                className: 'Button Button--primary IndexPage-newDiscussion',
+                itemClassName: 'App-primaryControl',
+                onclick: this.newDiscussion.bind(this),
+                disabled: !canStartDiscussion
+              }));
+            }
 
             items.add('nav', SelectDropdown.component({
               children: this.navItems(this).toArray(),
@@ -22875,22 +22891,6 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
           key: 'newDiscussion',
           value: function newDiscussion() {
             window.isArticle = false;
-            var deferred = m.deferred();
-
-            if (app.session.user) {
-              this.composeNewDiscussion(deferred);
-            } else {
-              app.modal.show(new LogInModal({
-                onlogin: this.composeNewDiscussion.bind(this, deferred)
-              }));
-            }
-
-            return deferred.promise;
-          }
-        }, {
-          key: 'newDiscussion2',
-          value: function newDiscussion2() {
-            window.isArticle = true;
             var deferred = m.deferred();
 
             if (app.session.user) {
@@ -27611,7 +27611,7 @@ System.register('flarum/components/TextEditor', ['flarum/Component', 'flarum/uti
                 oninput: m.withAttr('value', this.oninput.bind(this)),
                 placeholder: this.props.placeholder || '',
                 disabled: !!this.props.disabled,
-                value: this.value() }),
+                value: this.value(), style: 'height: 189px;' }),
               m(
                 'ul',
                 { className: 'TextEditor-controls Composer-footer' },
@@ -28585,7 +28585,11 @@ System.register('flarum/helpers/highlight', ['flarum/utils/string'], function (_
   var truncate;
   function highlight(string, phrase, length) {
     if (!phrase && !length) return string;
-
+    var replaceStr = function replaceStr(str) {
+      return str.replace(/\\/g, '\\\\').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\./g, '\\.').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+    };
+    phrase = replaceStr(phrase);
+    console.log(phrase);
     // Convert the word phrase into a global regular expression (if it isn't
     // already) so we can search the string for matched.
     var regexp = phrase instanceof RegExp ? phrase : new RegExp(phrase, 'gi');

@@ -9,7 +9,7 @@ System.register('flarum/tags/addTagComposer', ['flarum/extend', 'flarum/componen
     extend(IndexPage.prototype, 'composeNewDiscussion', function (promise) {
       var tag = app.store.getBy('tags', 'slug', this.params().tags);
 
-      if (tag.isArticle() != window.isArticle) {
+      if (tag && tag.isArticle() != window.isArticle) {
         return;
       }
       if (tag) {
@@ -170,7 +170,6 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
             backgroundColor: color
           };
         }
-        //window.isArticle = tag.isArticle();
       }
     });
 
@@ -178,7 +177,11 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
     // will let us filter discussions by tag.
     extend(IndexPage.prototype, 'params', function (params) {
       params.tags = m.route.param('tags');
-      params.article = m.route.param('article');
+      if (params.filter == "following") {
+        window.following = true;
+      } else {
+        window.following = false;
+      }
       if (m.route.param('article') != 1) {
         window.ToArticle = false;
       } else {
@@ -194,11 +197,13 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
       if (this.props.params.tags) {
         params.filter.q = (params.filter.q || '') + ' tag:' + this.props.params.tags;
       }
-      if (tag != undefined && tag.isArticle()) {
-        params.filter.q = (params.filter.q || '') + " is:article";
-      }
-      if (this.props.params.article == 1) {
-        params.filter.q = (params.filter.q || '') + " is:article";
+
+      if (window.following) return;
+
+      if (window.ToArticle) {
+        params.filter.q = (params.filter.q || '') + " article:is";
+      } else {
+        params.filter.q = (params.filter.q || '') + " article:not";
       }
     });
   });
@@ -263,7 +268,7 @@ System.register('flarum/tags/addTagLabels', ['flarum/extend', 'flarum/components
       window.currdiscussion = this.props.discussion;
 
       if (tags && tags.length) {
-        window.currIsArticle = tags[0].isArticle();
+        window.currIsArticle = tags[0].data.attributes.isArticle;
         items.add('tags', tagsLabel(tags, {
           link: true
         }), 5);
@@ -308,7 +313,9 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
       items.add('article', LinkButton.component({
         icon: 'th-large',
         children: "所有文章",
-        href: app.route('article', { article: 1 })
+        href: app.route('article', {
+          article: 1
+        })
       }), 100);
 
       if (app.current instanceof TagsPage) return;
@@ -326,9 +333,12 @@ System.register('flarum/tags/addTagList', ['flarum/extend', 'flarum/components/I
           active = currentTag.parent() === tag;
         }
 
-        console.log(window.ToArticle);
         if (window.ToArticle == tag.isArticle()) {
-          items.add('tag' + tag.id(), TagLinkButton.component({ tag: tag, params: params, active: active }), -10);
+          items.add('tag' + tag.id(), TagLinkButton.component({
+            tag: tag,
+            params: params,
+            active: active
+          }), -10);
         }
       };
 

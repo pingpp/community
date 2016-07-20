@@ -12,7 +12,7 @@ export default function() {
   extend(IndexPage.prototype, 'composeNewDiscussion', function(promise) {
     const tag = app.store.getBy('tags', 'slug', this.params().tags);
 
-    if (tag.isArticle() != window.isArticle) {
+    if (tag && tag.isArticle() != window.isArticle) {
       return
     }
     if (tag) {

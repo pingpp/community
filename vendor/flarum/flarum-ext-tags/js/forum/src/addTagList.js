@@ -1,4 +1,6 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import IndexPage from 'flarum/components/IndexPage';
 import Separator from 'flarum/components/Separator';
 import LinkButton from 'flarum/components/LinkButton';
@@ -20,7 +22,9 @@ export default function() {
     items.add('article', LinkButton.component({
       icon: 'th-large',
       children: "所有文章",
-      href: app.route('article',{ article: 1})
+      href: app.route('article', {
+        article: 1
+      })
     }), 100);
 
     if (app.current instanceof TagsPage) return;
@@ -38,9 +42,12 @@ export default function() {
         active = currentTag.parent() === tag;
       }
 
-      console.log(window.ToArticle);
-      if (window.ToArticle == tag.isArticle()){
-        items.add('tag' + tag.id(), TagLinkButton.component({tag, params, active}), -10);
+      if (window.ToArticle == tag.isArticle()) {
+        items.add('tag' + tag.id(), TagLinkButton.component({
+          tag,
+          params,
+          active
+        }), -10);
       }
     };
 

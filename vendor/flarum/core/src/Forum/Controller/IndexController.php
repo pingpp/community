@@ -37,7 +37,8 @@ class IndexController extends ClientController
         $queryParams = $request->getQueryParams();
 
         $sort = array_pull($queryParams, 'sort');
-        $q = array_pull($queryParams, 'q');
+        $q = array_pull($queryParams, 'q',"article:not");
+
         $page = array_pull($queryParams, 'page', 1);
 
         $params = [

@@ -40,7 +40,6 @@ export default function() {
           backgroundColor: color
         };
       }
-      //window.isArticle = tag.isArticle();
     }
   });
 
@@ -48,7 +47,11 @@ export default function() {
   // will let us filter discussions by tag.
   extend(IndexPage.prototype, 'params', function(params) {
     params.tags = m.route.param('tags');
-    params.article = m.route.param('article')
+    if (params.filter == "following") {
+      window.following = true;
+    } else {
+      window.following = false;
+    }
     if (m.route.param('article') != 1) {
       window.ToArticle = false;
     } else {
@@ -64,11 +67,13 @@ export default function() {
     if (this.props.params.tags) {
       params.filter.q = (params.filter.q || '') + ' tag:' + this.props.params.tags;
     }
-    if (tag != undefined && tag.isArticle()) {
-      params.filter.q = (params.filter.q || '') + " is:article";
-    }
-    if (this.props.params.article == 1) {
-      params.filter.q = (params.filter.q || '') + " is:article";
+
+    if (window.following) return;
+
+    if (window.ToArticle) {
+      params.filter.q = (params.filter.q || '') + " article:is";
+    } else {
+      params.filter.q = (params.filter.q || '') + " article:not";
     }
   });
 }

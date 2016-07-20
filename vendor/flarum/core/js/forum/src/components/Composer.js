@@ -226,11 +226,11 @@ class Composer extends Component {
       this.position !== Composer.PositionEnum.MINIMIZED &&
       this.$().css('position') !== 'absolute';
 
-    const paddingBottom = visible
-      ? this.computedHeight() - parseInt($('#app').css('padding-bottom'), 10)
-      : 0;
+    const paddingBottom = visible ? this.computedHeight() - parseInt($('#app').css('padding-bottom'), 10) : 0;
 
-    $('#content').css({paddingBottom});
+    $('#content').css({
+      paddingBottom
+    });
   }
 
   /**
@@ -320,12 +320,20 @@ class Composer extends Component {
     const newHeight = $composer.outerHeight();
 
     if (oldPosition === Composer.PositionEnum.HIDDEN) {
-      $composer.css({bottom: -newHeight, height: newHeight});
+      $composer.css({
+        bottom: -newHeight,
+        height: newHeight
+      });
     } else {
-      $composer.css({height: oldHeight});
+      $composer.css({
+        height: oldHeight
+      });
     }
 
-    $composer.animate({bottom: 0, height: newHeight}, 'fast', () => this.component.focus());
+    $composer.animate({
+      bottom: 0,
+      height: newHeight
+    }, 'fast', () => this.component.focus());
 
     this.updateBodyPadding();
     $(window).scrollTop(scrollTop);
@@ -376,7 +384,9 @@ class Composer extends Component {
     // Animate the composer sliding down off the bottom edge of the viewport.
     // Only when the animation is completed, update the Composer state flag and
     // other elements on the page.
-    $composer.stop(true).animate({bottom: -$composer.height()}, 'fast', () => {
+    $composer.stop(true).animate({
+      bottom: -$composer.height()
+    }, 'fast', () => {
       this.position = Composer.PositionEnum.HIDDEN;
       this.clear();
       m.redraw();

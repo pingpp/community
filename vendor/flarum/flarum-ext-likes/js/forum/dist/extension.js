@@ -1,11 +1,15 @@
 'use strict';
 
 System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'flarum/components/Button', 'flarum/components/CommentPost'], function (_export, _context) {
+  "use strict";
+
   var extend, app, Button, CommentPost;
 
   _export('default', function () {
     extend(CommentPost.prototype, 'actionItems', function (items) {
       var post = this.props.post;
+
+      if (window.currIsArticle && post.data.attributes.isStart) return;
 
       if (post.isHidden() || !post.canLike()) return;
 
@@ -13,13 +17,22 @@ System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'f
         return user === app.session.user;
       });
 
+      var title;
+      if (post.data.attributes.isStart) {
+        title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start');
+      } else {
+        title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link');
+      }
+
       items.add('like', Button.component({
-        children: app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link'),
+        children: title,
         className: 'Button Button--link',
         onclick: function onclick() {
           isLiked = !isLiked;
 
-          post.save({ isLiked: isLiked });
+          post.save({
+            isLiked: isLiked
+          });
 
           // We've saved the fact that we do or don't like the post, but in order
           // to provide instantaneous feedback to the user, we'll need to add or
@@ -33,7 +46,10 @@ System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'f
           });
 
           if (isLiked) {
-            data.unshift({ type: 'users', id: app.session.user.id() });
+            data.unshift({
+              type: 'users',
+              id: app.session.user.id()
+            });
           }
         }
       }));
@@ -56,6 +72,8 @@ System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'f
 'use strict';
 
 System.register('flarum/likes/addLikesList', ['flarum/extend', 'flarum/app', 'flarum/components/CommentPost', 'flarum/helpers/punctuateSeries', 'flarum/helpers/username', 'flarum/helpers/icon', 'flarum/likes/components/PostLikesModal'], function (_export, _context) {
+  "use strict";
+
   var extend, app, CommentPost, punctuateSeries, username, icon, PostLikesModal;
 
   _export('default', function () {
@@ -130,6 +148,8 @@ System.register('flarum/likes/addLikesList', ['flarum/extend', 'flarum/app', 'fl
 'use strict';
 
 System.register('flarum/likes/components/PostLikedNotification', ['flarum/components/Notification', 'flarum/helpers/username', 'flarum/helpers/punctuateSeries'], function (_export, _context) {
+  "use strict";
+
   var Notification, username, punctuateSeries, PostLikedNotification;
   return {
     setters: [function (_flarumComponentsNotification) {
@@ -186,6 +206,8 @@ System.register('flarum/likes/components/PostLikedNotification', ['flarum/compon
 'use strict';
 
 System.register('flarum/likes/components/PostLikesModal', ['flarum/components/Modal', 'flarum/helpers/avatar', 'flarum/helpers/username'], function (_export, _context) {
+  "use strict";
+
   var Modal, avatar, username, PostLikesModal;
   return {
     setters: [function (_flarumComponentsModal) {
@@ -251,6 +273,8 @@ System.register('flarum/likes/components/PostLikesModal', ['flarum/components/Mo
 'use strict';
 
 System.register('flarum/likes/main', ['flarum/extend', 'flarum/app', 'flarum/models/Post', 'flarum/Model', 'flarum/components/NotificationGrid', 'flarum/likes/addLikeAction', 'flarum/likes/addLikesList', 'flarum/likes/components/PostLikedNotification'], function (_export, _context) {
+  "use strict";
+
   var extend, app, Post, Model, NotificationGrid, addLikeAction, addLikesList, PostLikedNotification;
   return {
     setters: [function (_flarumExtend) {

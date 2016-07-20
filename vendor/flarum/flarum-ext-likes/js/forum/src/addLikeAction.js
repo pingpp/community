@@ -1,4 +1,6 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import app from 'flarum/app';
 import Button from 'flarum/components/Button';
 import CommentPost from 'flarum/components/CommentPost';
@@ -7,18 +9,29 @@ export default function() {
   extend(CommentPost.prototype, 'actionItems', function(items) {
     const post = this.props.post;
 
+    if (window.currIsArticle && post.data.attributes.isStart) return;
+
     if (post.isHidden() || !post.canLike()) return;
 
     let isLiked = app.session.user && post.likes().some(user => user === app.session.user);
 
+    var title;
+    if (post.data.attributes.isStart) {
+      title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start')
+    } else {
+      title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link')
+    }
+
     items.add('like',
       Button.component({
-        children: app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link'),
+        children: title,
         className: 'Button Button--link',
         onclick: () => {
           isLiked = !isLiked;
 
-          post.save({isLiked});
+          post.save({
+            isLiked
+          });
 
           // We've saved the fact that we do or don't like the post, but in order
           // to provide instantaneous feedback to the user, we'll need to add or
@@ -32,7 +45,10 @@ export default function() {
           });
 
           if (isLiked) {
-            data.unshift({type: 'users', id: app.session.user.id()});
+            data.unshift({
+              type: 'users',
+              id: app.session.user.id()
+            });
           }
         }
       })

@@ -21,11 +21,13 @@ flarum-likes:
 
     # These translations are displayed beneath individual posts.
     post:
+      like_link_start: 我也有这个问题
       like_link: 赞
-      liked_by_self_text: "{users} 喜欢它"  # Can be pluralized to agree with the number of users!
-      liked_by_text: "{users} 喜欢它|{users} 喜欢它"
+      liked_by_self_text: "{users} 赞了这条回复"  # Can be pluralized to agree with the number of users!
+      liked_by_text: "{users} 赞了这条回复|{users} 赞了这条回复"
       others_link: => core.ref.some_others
       unlike_link: 取消赞
+      unlike_link_start: 我没有这个问题
       you_text: => core.ref.you
 
     # These translations are used by the Users Who Like This modal dialog.

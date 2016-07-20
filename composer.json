@@ -48,6 +48,7 @@
     "config": {
         "preferred-install": "dist"
     },
+
     "minimum-stability": "beta",
     "prefer-stable": true
 }

@@ -155,27 +155,31 @@ export default class IndexPage extends Page {
     const items = new ItemList();
     const canStartDiscussion = app.forum.attribute('canStartDiscussion') || !app.session.user;
 
-    items.add('newDiscussion',
-      Button.component({
-        children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
-        icon: 'edit',
-        className: 'Button Button--primary IndexPage-newDiscussion',
-        itemClassName: 'App-primaryControl',
-        onclick: this.newDiscussion.bind(this),
-        disabled: !canStartDiscussion
-      })
-    );
-
-    items.add('newArticle',
-      Button.component({
-        children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
-        icon: 'edit',
-        className: 'Button Button--primary IndexPage-newDiscussion',
-        itemClassName: 'App-primaryControl',
-        onclick: this.newDiscussion2.bind(this),
-        disabled: !canStartDiscussion
-      })
-    );
+    if (window.ToArticle) {
+      window.isArticle = true
+      items.add('newDiscussion',
+        Button.component({
+          children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_article_button' : 'core.forum.index.cannot_start_discussion_button'),
+          icon: 'edit',
+          className: 'Button Button--primary IndexPage-newDiscussion',
+          itemClassName: 'App-primaryControl',
+          onclick: this.newDiscussion.bind(this),
+          disabled: !canStartDiscussion
+        })
+      );
+    } else {
+      window.isArticle = false;
+      items.add('newDiscussion',
+        Button.component({
+          children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
+          icon: 'edit',
+          className: 'Button Button--primary IndexPage-newDiscussion',
+          itemClassName: 'App-primaryControl',
+          onclick: this.newDiscussion.bind(this),
+          disabled: !canStartDiscussion
+        })
+      );
+    }
 
     items.add('nav',
       SelectDropdown.component({
@@ -342,23 +346,6 @@ export default class IndexPage extends Page {
    */
   newDiscussion() {
     window.isArticle = false
-    const deferred = m.deferred();
-
-    if (app.session.user) {
-      this.composeNewDiscussion(deferred);
-    } else {
-      app.modal.show(
-        new LogInModal({
-          onlogin: this.composeNewDiscussion.bind(this, deferred)
-        })
-      );
-    }
-
-    return deferred.promise;
-  }
-
-  newDiscussion2() {
-    window.isArticle = true
     const deferred = m.deferred();
 
     if (app.session.user) {

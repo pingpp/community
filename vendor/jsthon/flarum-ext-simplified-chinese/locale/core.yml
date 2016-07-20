@@ -236,6 +236,7 @@ core:
       mark_all_as_read_tooltip: => core.ref.mark_all_as_read
       refresh_tooltip: 刷新
       start_discussion_button: => core.ref.start_a_discussion
+      start_article_button: 新的文章
 
     # These translations are used by the sorting control above the discussion list.
     index_sort:
@@ -388,15 +389,17 @@ core:
     # These translations are used in emails sent when users register new accounts.
     activate_account:
       body: |
-        嘿~
+        嘿～
 
-        {username} 想通过这个邮箱在 {forum} 注册账号。（真希望是你！）
+        {username} 想通过这个邮箱在 {forum} 注册账号。（哇，真希望是你！）
 
-        如果是你注册的，只需打开下面的链接即可完成账号激活。
+        如果是你本人，只需打开下面的链接即可完成账号激活。
 
         {url}
 
-        如果你感到莫名其妙，请忽略这封邮件。
+        如果你感到莫名其妙，别慌，在千人万人中，我唯独遇见了你，我想肯定是我上辈子吃斋念佛修来的福分，点一下［网址］，给我和你，一个相遇相识相知机会。
+
+        如果你狠心放弃认识我，请忽略这封邮件。
       subject: 激活你的账号
 
     # These translations are used in emails sent when users change their email address.
@@ -404,13 +407,13 @@ core:
       body: |
         Hey {username} !
 
-        有人想更换你在 {forum} 的邮箱地址。（但愿是你！）
+        有人想更换你在 {forum} 的邮箱地址。（oh，但愿是你！）
 
         如果确定是你的操作，只需打开下面的链接即可更换新的邮箱。
 
         {url}
 
-        如果不是你，请立即检查账号安全并修改密码。
+        如果不是你，还等什么，赶紧检查账号安全并修改密码。
       subject: 确认邮箱地址
 
     # These translations are used in emails sent when users ask to reset their passwords.
@@ -418,13 +421,13 @@ core:
       body: |
         Hey {username} !
 
-        有人想要重置你在 {forum} 的登入密码。（真希望是你！）
+        有人想要重置你在 {forum} 的登入密码。（oh，但愿是你！）
 
         如果确定是你的操作，只需打开下面的链接即可完成重置密码。
 
         {url}
 
-        如果不是你，请忽略掉它，我们不会受理这个操作。
+        如果不是你，放心，忽略掉它，我们是不会受理这个操作的。
       subject: 重置你的密码
 
   ##

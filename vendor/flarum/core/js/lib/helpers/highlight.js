@@ -1,4 +1,6 @@
-import { truncate } from 'flarum/utils/string';
+import {
+  truncate
+} from 'flarum/utils/string';
 
 /**
  * The `highlight` helper searches for a word phrase in a string, and wraps
@@ -12,9 +14,21 @@ import { truncate } from 'flarum/utils/string';
  */
 export default function highlight(string, phrase, length) {
   if (!phrase && !length) return string;
-
-  // Convert the word phrase into a global regular expression (if it isn't
-  // already) so we can search the string for matched.
+  var replaceStr = function(str) {
+    return str.replace(/\\/g, '\\\\')
+      .replace(/\+/g, '\\+')
+      .replace(/\*/g, '\\*')
+      .replace(/\./g, '\\.')
+      .replace(/\[/g, '\\[')
+      .replace(/\]/g, '\\]')
+      .replace(/\./g, '\\.')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+  }
+  phrase = replaceStr(phrase)
+  console.log(phrase)
+    // Convert the word phrase into a global regular expression (if it isn't
+    // already) so we can search the string for matched.
   const regexp = phrase instanceof RegExp ? phrase : new RegExp(phrase, 'gi');
 
   let highlighted = string;

@@ -47,7 +47,7 @@ export default function() {
     window.currdiscussion = this.props.discussion;
 
     if (tags && tags.length) {
-      window.currIsArticle = tags[0].isArticle();
+      window.currIsArticle = tags[0].data.attributes.isArticle;
       items.add('tags', tagsLabel(tags, {
         link: true
       }), 5);
