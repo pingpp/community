@@ -2,7 +2,7 @@
   'debug' => true,
   'database' => array (
     'driver' => 'mysql',
-    'host' => 'localhost',
+    'host' => '121.42.184.141',
     'database' => 'flarum',
     'username' => 'root',
     'password' => 'Jx2015',
@@ -11,7 +11,7 @@
     'prefix' => '',
     'strict' => false,
   ),
-  'url' => 'http://192.168.24.43:1237',
+  'url' => 'http://localhost',
   'paths' => array (
     'api' => 'api',
     'admin' => 'admin',

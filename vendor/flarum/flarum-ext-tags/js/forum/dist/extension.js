@@ -9,6 +9,9 @@ System.register('flarum/tags/addTagComposer', ['flarum/extend', 'flarum/componen
     extend(IndexPage.prototype, 'composeNewDiscussion', function (promise) {
       var tag = app.store.getBy('tags', 'slug', this.params().tags);
 
+      if (tag.isArticle() != window.isArticle) {
+        return;
+      }
       if (tag) {
         (function () {
           var parent = tag.parent();
@@ -68,7 +71,12 @@ System.register('flarum/tags/addTagComposer', ['flarum/extend', 'flarum/componen
     extend(DiscussionComposer.prototype, 'data', function (data) {
       data.relationships = data.relationships || {};
       data.relationships.tags = this.tags;
-      data.relationships.isArticle = { data: { type: "isArticle", id: window.isArticle } };
+      data.relationships.isArticle = {
+        data: {
+          type: "isArticle",
+          id: window.isArticle
+        }
+      };
     });
   });
 
@@ -141,7 +149,9 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
     override(IndexPage.prototype, 'hero', function (original) {
       var tag = this.currentTag();
 
-      if (tag) return TagHero.component({ tag: tag });
+      if (tag) return TagHero.component({
+        tag: tag
+      });
 
       return original();
     });
@@ -156,10 +166,11 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
         var color = tag.color();
 
         if (color) {
-          items.get('newDiscussion').props.style = { backgroundColor: color };
+          items.get('newDiscussion').props.style = {
+            backgroundColor: color
+          };
         }
-
-        window.isArticle = tag.isArticle();
+        //window.isArticle = tag.isArticle();
       }
     });
 
@@ -614,21 +625,27 @@ System.register('flarum/tags/components/TagDiscussionModal', ['flarum/components
         }, {
           key: 'title',
           value: function title() {
-            return this.props.discussion ? app.translator.trans('flarum-tags.forum.choose_tags.edit_title', { title: m(
+            return this.props.discussion ? app.translator.trans('flarum-tags.forum.choose_tags.edit_title', {
+              title: m(
                 'em',
                 null,
                 this.props.discussion.title()
-              ) }) : app.translator.trans('flarum-tags.forum.choose_tags.title');
+              )
+            }) : app.translator.trans('flarum-tags.forum.choose_tags.title');
           }
         }, {
           key: 'getInstruction',
           value: function getInstruction(primaryCount, secondaryCount) {
             if (primaryCount < this.minPrimary) {
               var remaining = this.minPrimary - primaryCount;
-              return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_primary_placeholder', remaining, { count: remaining });
+              return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_primary_placeholder', remaining, {
+                count: remaining
+              });
             } else if (secondaryCount < this.minSecondary) {
               var _remaining = this.minSecondary - secondaryCount;
-              return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_secondary_placeholder', _remaining, { count: _remaining });
+              return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_secondary_placeholder', _remaining, {
+                count: _remaining
+              });
             }
 
             return '';
@@ -870,7 +887,9 @@ System.register('flarum/tags/components/TagDiscussionModal', ['flarum/components
               }
 
               if (typeof scrollTop !== 'undefined') {
-                $dropdown.stop(true).animate({ scrollTop: scrollTop }, 100);
+                $dropdown.stop(true).animate({
+                  scrollTop: scrollTop
+                }, 100);
               }
             }
           }
@@ -883,7 +902,11 @@ System.register('flarum/tags/components/TagDiscussionModal', ['flarum/components
             var tags = this.selected;
 
             if (discussion) {
-              discussion.save({ relationships: { tags: tags } }).then(function () {
+              discussion.save({
+                relationships: {
+                  tags: tags
+                }
+              }).then(function () {
                 if (app.current instanceof DiscussionPage) {
                   app.current.stream.update();
                 }
