@@ -37,6 +37,9 @@ class ListUsersController extends AbstractCollectionController
         'discussionsCount',
         'answerCount',
         'askCount',
+        'praise_count',
+        'agree_count',
+        'same_question_count',
         'lastSeenTime',
         'joinTime'
     ];
