@@ -25,7 +25,7 @@ app.initializers.add('flarum-tags', function(app) {
   };*/
 
   app.routes.tag = {
-    path: '/t/:tags',
+    path: '/t/:tags/:article',
     component: IndexPage.component()
   };
 

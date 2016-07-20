@@ -84,18 +84,22 @@ export default class TagDiscussionModal extends Modal {
   }
 
   title() {
-    return this.props.discussion
-      ? app.translator.trans('flarum-tags.forum.choose_tags.edit_title', {title: <em>{this.props.discussion.title()}</em>})
-      : app.translator.trans('flarum-tags.forum.choose_tags.title');
+    return this.props.discussion ? app.translator.trans('flarum-tags.forum.choose_tags.edit_title', {
+      title: <em>{this.props.discussion.title()}</em>
+    }) : app.translator.trans('flarum-tags.forum.choose_tags.title');
   }
 
   getInstruction(primaryCount, secondaryCount) {
     if (primaryCount < this.minPrimary) {
       const remaining = this.minPrimary - primaryCount;
-      return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_primary_placeholder', remaining, {count: remaining});
+      return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_primary_placeholder', remaining, {
+        count: remaining
+      });
     } else if (secondaryCount < this.minSecondary) {
       const remaining = this.minSecondary - secondaryCount;
-      return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_secondary_placeholder', remaining, {count: remaining});
+      return app.translator.transChoice('flarum-tags.forum.choose_tags.choose_secondary_placeholder', remaining, {
+        count: remaining
+      });
     }
 
     return '';
@@ -111,7 +115,7 @@ export default class TagDiscussionModal extends Modal {
     // makes it impossible to select a child if its parent hasn't been selected.
     tags = tags.filter(tag => {
       const parent = tag.parent();
-      if (tag.isArticle() != window.isArticle){
+      if (tag.isArticle() != window.isArticle) {
         return false
       }
       return parent === false || this.selected.indexOf(parent) !== -1;
@@ -298,7 +302,9 @@ export default class TagDiscussionModal extends Modal {
       }
 
       if (typeof scrollTop !== 'undefined') {
-        $dropdown.stop(true).animate({scrollTop}, 100);
+        $dropdown.stop(true).animate({
+          scrollTop
+        }, 100);
       }
     }
   }
@@ -310,7 +316,11 @@ export default class TagDiscussionModal extends Modal {
     const tags = this.selected;
 
     if (discussion) {
-      discussion.save({relationships: {tags}})
+      discussion.save({
+          relationships: {
+            tags
+          }
+        })
         .then(() => {
           if (app.current instanceof DiscussionPage) {
             app.current.stream.update();

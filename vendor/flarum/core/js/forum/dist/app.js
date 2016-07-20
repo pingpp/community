@@ -22626,7 +22626,9 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
             }
 
             if (!app.cache.discussionList) {
-              app.cache.discussionList = new DiscussionList({ params: params });
+              app.cache.discussionList = new DiscussionList({
+                params: params
+              });
             }
 
             app.history.push('index', icon('bars'));
@@ -22751,6 +22753,15 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
               disabled: !canStartDiscussion
             }));
 
+            items.add('newArticle', Button.component({
+              children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
+              icon: 'edit',
+              className: 'Button Button--primary IndexPage-newDiscussion',
+              itemClassName: 'App-primaryControl',
+              onclick: this.newDiscussion2.bind(this),
+              disabled: !canStartDiscussion
+            }));
+
             items.add('nav', SelectDropdown.component({
               children: this.navItems(this).toArray(),
               buttonClassName: 'Button',
@@ -22863,6 +22874,23 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
         }, {
           key: 'newDiscussion',
           value: function newDiscussion() {
+            window.isArticle = false;
+            var deferred = m.deferred();
+
+            if (app.session.user) {
+              this.composeNewDiscussion(deferred);
+            } else {
+              app.modal.show(new LogInModal({
+                onlogin: this.composeNewDiscussion.bind(this, deferred)
+              }));
+            }
+
+            return deferred.promise;
+          }
+        }, {
+          key: 'newDiscussion2',
+          value: function newDiscussion2() {
+            window.isArticle = true;
             var deferred = m.deferred();
 
             if (app.session.user) {
@@ -22878,7 +22906,9 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
         }, {
           key: 'composeNewDiscussion',
           value: function composeNewDiscussion(deferred) {
-            var component = new DiscussionComposer({ user: app.session.user });
+            var component = new DiscussionComposer({
+              user: app.session.user
+            });
 
             app.composer.load(component);
             app.composer.show();
@@ -22893,7 +22923,9 @@ System.register('flarum/components/IndexPage', ['flarum/extend', 'flarum/compone
             var confirmation = confirm(app.translator.trans('core.forum.index.mark_all_as_read_confirmation'));
 
             if (confirmation) {
-              app.session.user.save({ readTime: new Date() });
+              app.session.user.save({
+                readTime: new Date()
+              });
             }
           }
         }]);
@@ -26702,7 +26734,7 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                         this.results[query] = [];
 
                         var SearchEngine = this;
-                        return $.when($.get("http://localhost:1239/search?text=" + query)).then(function (data, ok) {
+                        return $.when($.get("http://192.168.24.43:1239/search?text=" + query)).then(function (data, ok) {
                             if (ok == "success") {
                                 SearchEngine.results[query] = data.Data;
                             }

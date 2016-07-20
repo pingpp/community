@@ -13,9 +13,9 @@ export default class FeedBackPage extends Page {
         super.init();
         this.loading = true;
 
-        this.page=1;
-        this.limit=10;
-        this.query="";
+        this.page = 1;
+        this.limit = 10;
+        this.query = "";
 
         this.canprev = false;
         this.cannext = false;
@@ -59,7 +59,7 @@ export default class FeedBackPage extends Page {
 
     loadNext() {
         this.loading = true;
-        this.page =this.page+1;
+        this.page = this.page + 1;
         this.loadResults().then(
             results => {
                 this.list = results;
@@ -74,7 +74,7 @@ export default class FeedBackPage extends Page {
 
     loadPrev() {
         this.loading = true;
-        this.page =this.page-1;
+        this.page = this.page - 1;
         this.loadResults().then(
             results => {
                 this.listusers = [];
@@ -100,7 +100,7 @@ export default class FeedBackPage extends Page {
                 </div>
                 <div className="UserPage-users">
                     <div className="container">
-                        <table className="UserGrid">
+                        <table className="UserGrid" style="width: 100%;">
                         <thead>
                             <th>用户id</th>
                             <th>反馈内容</th>
@@ -144,7 +144,7 @@ export default class FeedBackPage extends Page {
         console.log(listuser.isActivated());
         this.loading = true;
         app.request({
-            url: app.forum.attribute('apiUrl') + '/user/'+ listuser.id(),
+            url: app.forum.attribute('apiUrl') + '/user/' + listuser.id(),
             method: 'PATCH',
             data: data
         }).then(() => {

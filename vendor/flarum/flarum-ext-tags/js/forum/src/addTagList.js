@@ -38,7 +38,10 @@ export default function() {
         active = currentTag.parent() === tag;
       }
 
-      items.add('tag' + tag.id(), TagLinkButton.component({tag, params, active}), -10);
+      console.log(window.ToArticle);
+      if (window.ToArticle == tag.isArticle()){
+        items.add('tag' + tag.id(), TagLinkButton.component({tag, params, active}), -10);
+      }
     };
 
     sortTags(tags)

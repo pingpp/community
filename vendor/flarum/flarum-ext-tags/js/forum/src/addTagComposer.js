@@ -1,4 +1,7 @@
-import { extend, override } from 'flarum/extend';
+import {
+  extend,
+  override
+} from 'flarum/extend';
 import IndexPage from 'flarum/components/IndexPage';
 import DiscussionComposer from 'flarum/components/DiscussionComposer';
 
@@ -9,6 +12,9 @@ export default function() {
   extend(IndexPage.prototype, 'composeNewDiscussion', function(promise) {
     const tag = app.store.getBy('tags', 'slug', this.params().tags);
 
+    if (tag.isArticle() != window.isArticle) {
+      return
+    }
     if (tag) {
       const parent = tag.parent();
       const tags = parent ? [parent, tag] : [tag];
@@ -62,6 +68,11 @@ export default function() {
   extend(DiscussionComposer.prototype, 'data', function(data) {
     data.relationships = data.relationships || {};
     data.relationships.tags = this.tags;
-    data.relationships.isArticle = {data: {type: "isArticle", id: window.isArticle}};
+    data.relationships.isArticle = {
+      data: {
+        type: "isArticle",
+        id: window.isArticle
+      }
+    };
   });
 }

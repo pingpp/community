@@ -1,4 +1,7 @@
-import { extend, override } from 'flarum/extend';
+import {
+  extend,
+  override
+} from 'flarum/extend';
 import IndexPage from 'flarum/components/IndexPage';
 import DiscussionList from 'flarum/components/DiscussionList';
 
@@ -15,15 +18,17 @@ export default function() {
   override(IndexPage.prototype, 'hero', function(original) {
     const tag = this.currentTag();
 
-    if (tag) return TagHero.component({tag});
+    if (tag) return TagHero.component({
+      tag
+    });
 
     return original();
   });
 
 
   window.isArticle = false
-  // If currently viewing a tag, restyle the 'new discussion' button to use
-  // the tag's color.
+    // If currently viewing a tag, restyle the 'new discussion' button to use
+    // the tag's color.
   extend(IndexPage.prototype, 'sidebarItems', function(items) {
     const tag = this.currentTag();
 
@@ -31,14 +36,11 @@ export default function() {
       const color = tag.color();
 
       if (color) {
-        items.get('newDiscussion').props.style = {backgroundColor: color};
+        items.get('newDiscussion').props.style = {
+          backgroundColor: color
+        };
       }
-      if(tag.isArticle()){
-        $(".IndexPage-newDiscussion .Button-label").text("分享文章")
-      }else{
-        $(".IndexPage-newDiscussion .Button-label").text("新的问题")
-      }
-      window.isArticle = tag.isArticle()
+      //window.isArticle = tag.isArticle();
     }
   });
 
@@ -47,22 +49,26 @@ export default function() {
   extend(IndexPage.prototype, 'params', function(params) {
     params.tags = m.route.param('tags');
     params.article = m.route.param('article')
+    if (m.route.param('article') != 1) {
+      window.ToArticle = false;
+    } else {
+      window.ToArticle = true;
+    }
   });
 
   // Translate that parameter into a gambit appended to the search query.
   extend(DiscussionList.prototype, 'requestParams', function(params) {
     params.include.push('tags');
 
-
     var tag = app.store.getBy('tags', 'slug', this.props.params.tags);
     if (this.props.params.tags) {
       params.filter.q = (params.filter.q || '') + ' tag:' + this.props.params.tags;
     }
-    if(tag!=undefined&&tag.isArticle()){
-      params.filter.q = (params.filter.q || '') +" is:article";
+    if (tag != undefined && tag.isArticle()) {
+      params.filter.q = (params.filter.q || '') + " is:article";
     }
-    if (this.props.params.article==1){
-      params.filter.q = (params.filter.q || '') +" is:article";
+    if (this.props.params.article == 1) {
+      params.filter.q = (params.filter.q || '') + " is:article";
     }
   });
 }

@@ -1,4 +1,6 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import Page from 'flarum/components/Page';
 import ItemList from 'flarum/utils/ItemList';
 import listItems from 'flarum/helpers/listItems';
@@ -52,7 +54,9 @@ export default class IndexPage extends Page {
     }
 
     if (!app.cache.discussionList) {
-      app.cache.discussionList = new DiscussionList({params});
+      app.cache.discussionList = new DiscussionList({
+        params
+      });
     }
 
     app.history.push('index', icon('bars'));
@@ -158,6 +162,17 @@ export default class IndexPage extends Page {
         className: 'Button Button--primary IndexPage-newDiscussion',
         itemClassName: 'App-primaryControl',
         onclick: this.newDiscussion.bind(this),
+        disabled: !canStartDiscussion
+      })
+    );
+
+    items.add('newArticle',
+      Button.component({
+        children: app.translator.trans(canStartDiscussion ? 'core.forum.index.start_discussion_button' : 'core.forum.index.cannot_start_discussion_button'),
+        icon: 'edit',
+        className: 'Button Button--primary IndexPage-newDiscussion',
+        itemClassName: 'App-primaryControl',
+        onclick: this.newDiscussion2.bind(this),
         disabled: !canStartDiscussion
       })
     );
@@ -326,6 +341,24 @@ export default class IndexPage extends Page {
    * @return {Promise}
    */
   newDiscussion() {
+    window.isArticle = false
+    const deferred = m.deferred();
+
+    if (app.session.user) {
+      this.composeNewDiscussion(deferred);
+    } else {
+      app.modal.show(
+        new LogInModal({
+          onlogin: this.composeNewDiscussion.bind(this, deferred)
+        })
+      );
+    }
+
+    return deferred.promise;
+  }
+
+  newDiscussion2() {
+    window.isArticle = true
     const deferred = m.deferred();
 
     if (app.session.user) {
@@ -348,7 +381,9 @@ export default class IndexPage extends Page {
    * @return {Promise}
    */
   composeNewDiscussion(deferred) {
-    const component = new DiscussionComposer({user: app.session.user});
+    const component = new DiscussionComposer({
+      user: app.session.user
+    });
 
     app.composer.load(component);
     app.composer.show();
@@ -367,7 +402,9 @@ export default class IndexPage extends Page {
     const confirmation = confirm(app.translator.trans('core.forum.index.mark_all_as_read_confirmation'));
 
     if (confirmation) {
-      app.session.user.save({readTime: new Date()});
+      app.session.user.save({
+        readTime: new Date()
+      });
     }
   }
 }

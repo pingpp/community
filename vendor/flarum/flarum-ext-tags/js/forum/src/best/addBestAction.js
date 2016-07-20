@@ -14,7 +14,7 @@ export default function() {
 
     let isBest  = post.data.attributes.isBest;
     if ((window.currbestId == 0 || isBest)&&!window.currIsArticle&&
-        post.data.attributes.isStart==false&&
+        post.data.attributes.isStart==false&&app.session.user&&
         window.currdiscussion.data.attributes.startUserId == app.session.user.id()){
 
       var text = "采纳答案";

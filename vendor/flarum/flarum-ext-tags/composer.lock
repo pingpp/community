@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9ac50354cdc29976d5aacf3a51b1a4d3",
-    "content-hash": "4c7631830fa77c6d969ddb0ebd516dbd",
+    "hash": "f202f23578763698315e370df7a80896",
+    "content-hash": "2ea71aa5702411653b2902280d6d8f82",
     "packages": [
         {
             "name": "danielstjules/stringy",
@@ -757,60 +757,6 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "time": "2015-10-31 11:25:43"
-        },
-        {
-            "name": "go-wyvern/pingxx-account",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/go-wyvern/pingxx-account.git",
-                "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
-                "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
-                "shasum": ""
-            },
-            "require": {
-                "flarum/core": "^0.1.0-beta.5"
-            },
-            "type": "flarum-extension",
-            "extra": {
-                "flarum-extension": {
-                    "title": "Pingxx Account",
-                    "icon": {
-                        "image": "logo-black.svg",
-                        "backgroundColor": "#FFFFFF",
-                        "backgroundSize": "cover",
-                        "backgroundPosition": "center"
-                    }
-                },
-                "flarum-locale": {
-                    "code": "zh",
-                    "title": "简体中文"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Pingxx\\Account\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "wyvern",
-                    "email": "wyvern.wu@aliyun.com"
-                }
-            ],
-            "description": "Pingxx Account",
-            "keywords": [
-                "account"
-            ],
-            "time": "2016-07-06 09:03:26"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -3028,8 +2974,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "flarum/core": 10,
-        "go-wyvern/pingxx-account": 20
+        "flarum/core": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,

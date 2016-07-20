@@ -4738,62 +4738,6 @@
         ]
     },
     {
-        "name": "go-wyvern/pingxx-account",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/go-wyvern/pingxx-account.git",
-            "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
-            "reference": "5a3c8f41f7280f4a56928722ee64f00aa1ba04d0",
-            "shasum": ""
-        },
-        "require": {
-            "flarum/core": "^0.1.0-beta.5"
-        },
-        "time": "2016-07-06 09:03:26",
-        "type": "flarum-extension",
-        "extra": {
-            "flarum-extension": {
-                "title": "Pingxx Account",
-                "icon": {
-                    "image": "logo-black.svg",
-                    "backgroundColor": "#FFFFFF",
-                    "backgroundSize": "cover",
-                    "backgroundPosition": "center"
-                }
-            },
-            "flarum-locale": {
-                "code": "zh",
-                "title": "简体中文"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "Pingxx\\Account\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "wyvern",
-                "email": "wyvern.wu@aliyun.com"
-            }
-        ],
-        "description": "Pingxx Account",
-        "keywords": [
-            "account"
-        ]
-    },
-    {
         "name": "flagrow/flarum-ext-image-upload",
         "version": "0.2.3",
         "version_normalized": "0.2.3.0",
@@ -4858,6 +4802,62 @@
             "image",
             "imgur",
             "upload"
+        ]
+    },
+    {
+        "name": "go-wyvern/pingxx-account",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/go-wyvern/pingxx-account.git",
+            "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/07b0b746d6b8e223ad4263f05565ccd41709d703",
+            "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703",
+            "shasum": ""
+        },
+        "require": {
+            "flarum/core": "^0.1.0-beta.5"
+        },
+        "time": "2016-07-19 01:39:57",
+        "type": "flarum-extension",
+        "extra": {
+            "flarum-extension": {
+                "title": "Pingxx Account",
+                "icon": {
+                    "image": "logo-black.svg",
+                    "backgroundColor": "#FFFFFF",
+                    "backgroundSize": "cover",
+                    "backgroundPosition": "center"
+                }
+            },
+            "flarum-locale": {
+                "code": "zh",
+                "title": "简体中文"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Pingxx\\Account\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "wyvern",
+                "email": "wyvern.wu@aliyun.com"
+            }
+        ],
+        "description": "Pingxx Account",
+        "keywords": [
+            "account"
         ]
     }
 ]

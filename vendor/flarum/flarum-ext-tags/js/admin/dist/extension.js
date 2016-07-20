@@ -1308,7 +1308,7 @@ System.register('flarum/tags/feedback/components/FeedBackPage', ['flarum/compone
                                     { className: 'container' },
                                     m(
                                         'table',
-                                        { className: 'UserGrid' },
+                                        { className: 'UserGrid', style: 'width: 100%;' },
                                         m(
                                             'thead',
                                             null,

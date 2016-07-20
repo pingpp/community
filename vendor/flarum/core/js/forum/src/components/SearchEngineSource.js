@@ -12,9 +12,9 @@ export default class SearchEngineSource {
 
         var SearchEngine = this
         return $.when(
-            $.get("http://localhost:1239/search?text="+query)
-        ).then(function (data,ok) {
-            if (ok=="success"){
+            $.get("http://192.168.24.43:1239/search?text=" + query)
+        ).then(function(data, ok) {
+            if (ok == "success") {
                 SearchEngine.results[query] = data.Data
             }
         });
