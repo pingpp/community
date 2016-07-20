@@ -61,8 +61,10 @@ class TokenController implements ControllerInterface
 
         $user = $this->users->findByIdentification($identification);
 
-        if (! $user || ! $user->checkPassword($password)) {
-            throw new PermissionDeniedException;
+        if (!$user){
+            throw new PermissionDeniedException("用户不存在");
+        }else if (!$user->checkPassword($password)) {
+            throw new PermissionDeniedException("用户密码错误");
         }
 
         $token = AccessToken::generate($user->id, $lifetime);
