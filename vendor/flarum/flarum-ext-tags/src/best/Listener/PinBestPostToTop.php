@@ -26,13 +26,6 @@ class PinStickiedDiscussionsToTop
         $events->listen(ScopePostVisibility::class, [$this, 'reorderSearch2']);
     }
 
-    /**
-     * @param ConfigureDiscussionGambits $event
-
-    public function addStickyGambit(ConfigureDiscussionGambits $event)
-    {
-        $event->gambits->add(StickyGambit::class);
-    }*/
 
     /**
      * @param ConfigureDiscussionSearch $event

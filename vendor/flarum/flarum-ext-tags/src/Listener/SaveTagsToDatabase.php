@@ -96,6 +96,7 @@ class SaveTagsToDatabase
                 $discussion->tags()->sync($newTagIds);
             });
         }
+
     }
 
     /**

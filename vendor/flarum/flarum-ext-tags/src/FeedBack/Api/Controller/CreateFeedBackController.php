@@ -48,7 +48,15 @@ class CreateFeedBackController extends AbstractCreateController
 
         $feedback = new FeedBack;
         $feedback->user_id = $actor->id;
+        if ($actor->id==0) {
+            $feedback->user_name = "未登录用户";
+        }else{
+            $feedback->user_name = $actor->username;
+            $feedback->user_mail = $actor->email; 
+        }
         $feedback->text = $data["attributes"]["text"];
+        $feedback->created_at = time();
+        $feedback->updated_at = time();
         $feedback->save();
         echo json_encode(array('code' => 1 ));
         exit(1);
