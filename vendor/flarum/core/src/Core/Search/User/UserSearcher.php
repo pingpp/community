@@ -52,11 +52,15 @@ class UserSearcher
      * @param array $load An array of relationships to load on the results.
      * @return SearchResults
      */
-    public function search(SearchCriteria $criteria, $limit = null, $offset = 0, array $load = [])
+    public function search(SearchCriteria $criteria, $limit = null, $offset = 0, array $load = [], $is_pingxx = false)
     {
         $actor = $criteria->actor;
-
-        $query = $this->users->query()->whereVisibleTo($actor);
+        error_log($is_pingxx . "\n", 3, "./my-errors.log");
+        if ($is_pingxx == "true") {
+            $query = $this->users->findNotPingxx()->whereVisibleTo($actor);
+        } else {
+            $query = $this->users->query()->whereVisibleTo($actor);
+        }
 
         // Construct an object which represents this search for users.
         // Apply gambits to it, sort, and paging criteria. Also give extensions

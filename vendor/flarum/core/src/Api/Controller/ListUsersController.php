@@ -71,6 +71,8 @@ class ListUsersController extends AbstractCollectionController
     {
         $actor = $request->getAttribute('actor');
         $query = array_get($this->extractFilter($request), 'q');
+        $is_pingxx = array_get($this->extractFilter($request), 'is_pingxx');
+        error_log($is_pingxx . "\n", 3, "./my-errors.log");
         $sort = $this->extractSort($request);
 
         $criteria = new SearchCriteria($actor, $query, $sort);
@@ -79,7 +81,7 @@ class ListUsersController extends AbstractCollectionController
         $offset = $this->extractOffset($request);
         $load = $this->extractInclude($request);
 
-        $results = $this->searcher->search($criteria, $limit, $offset, $load);
+        $results = $this->searcher->search($criteria, $limit, $offset, $load, $is_pingxx);
 
         $document->addPaginationLinks(
             $this->url->toRoute('users.index'),

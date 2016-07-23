@@ -57,7 +57,8 @@ class UserValidator extends AbstractValidator
             ],
             'password' => [
                 'required',
-                'min:8'
+                'min:8',
+                'regex:/^[a-z0-9_-]+$/i'
             ]
         ];
     }

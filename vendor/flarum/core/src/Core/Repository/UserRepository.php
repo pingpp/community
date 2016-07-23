@@ -66,6 +66,10 @@ class UserRepository
         return User::where('email', $email)->first();
     }
 
+    public function findNotPingxx() {
+        return User::where('email', 'not like', '%pingxx.com');
+    }
+
     /**
      * Get the ID of a user with the given username.
      *
