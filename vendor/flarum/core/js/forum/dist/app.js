@@ -18848,12 +18848,12 @@ System.register('flarum/components/Alert', ['flarum/Component', 'flarum/componen
                 'span',
                 { className: 'Alert-body' },
                 children
-              ),
-              m(
-                'ul',
-                { className: 'Alert-controls' },
-                listItems(controls.concat(dismissControl))
               )
+              // m(
+              //   'ul',
+              //   { className: 'Alert-controls' },
+              //   listItems(controls.concat(dismissControl))
+              // )
             );
           }
         }]);
@@ -19387,6 +19387,7 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
           key: 'onerror',
           value: function onerror(error) {
             if (error.status === 401) {
+                console.log("=======2");
               error.alert.props.children = app.translator.trans('core.forum.change_email.incorrect_password_message');
             }
 
@@ -22130,6 +22131,7 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
           key: 'onerror',
           value: function onerror(error) {
             if (error.status === 401) {
+                console.log("=======3");
               error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
             }
 
@@ -23321,7 +23323,7 @@ System.register('flarum/components/LogInModal', ['flarum/components/Modal', 'fla
           key: 'onerror',
           value: function onerror(error) {
             if (error.status === 401) {
-              error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+              error.alert.props.children = JSON.parse(error.responseText).errors[0].message;
             }
 
             babelHelpers.get(Object.getPrototypeOf(LogInModal.prototype), 'onerror', this).call(this, error);

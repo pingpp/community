@@ -236,7 +236,7 @@ core:
       mark_all_as_read_tooltip: => core.ref.mark_all_as_read
       refresh_tooltip: 刷新
       start_discussion_button: => core.ref.start_a_discussion
-      start_article_button: 新的文章
+      start_article_button: 我要发文
 
     # These translations are used by the sorting control above the discussion list.
     index_sort:
