@@ -26,6 +26,7 @@ flarum-likes:
       liked_by_self_text: "{users} 赞了这条回复"  # Can be pluralized to agree with the number of users!
       liked_by_self_start_text: "{users} 也有这个问题"  # Can be pluralized to agree with the number of users!
       liked_by_text: "{users} 赞了这条回复|{users} 赞了这条回复"
+      liked_by_order_text: "{users} 赞了这篇文章|{users} 赞了这篇文章"
       liked_by_start_text: "{users} 也有这个问题|{users} 也有这个问题"
       others_link: => core.ref.some_others
       unlike_link: 取消赞

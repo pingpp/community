@@ -1,4 +1,6 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import app from 'flarum/app';
 import CommentPost from 'flarum/components/CommentPost';
 import punctuateSeries from 'flarum/helpers/punctuateSeries';
@@ -34,13 +36,19 @@ export default function() {
       if (overLimit) {
         const count = likes.length - names.length;
 
-        names.push(
-          <a href="#" onclick={e => {
-            e.preventDefault();
-            app.modal.show(new PostLikesModal({post}));
-          }}>
-            {app.translator.transChoice('flarum-likes.forum.post.others_link', count, {count})}
-          </a>
+        names.push( < a href = "#"
+          onclick = {
+            e => {
+              e.preventDefault();
+              app.modal.show(new PostLikesModal({
+                post
+              }));
+            }
+          } > {
+            app.translator.transChoice('flarum-likes.forum.post.others_link', count, {
+              count
+            })
+          } < /a>
         );
       }
 

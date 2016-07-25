@@ -17351,6 +17351,12 @@ System.register('flarum/components/Alert', ['flarum/Component', 'flarum/componen
             var children = extract(attrs, 'children');
             var controls = extract(attrs, 'controls') || [];
 
+            for (var i = controls.length - 1; i >= 0; i--) {
+              if (controls[i].props.children == "Debug") {
+                controls.splice(i, 1);
+              }
+            };
+
             // If the alert is meant to be dismissible (which is the case by default),
             // then we will create a dismiss button to append as the final control in
             // the alert.
@@ -20648,7 +20654,11 @@ System.register('flarum/helpers/highlight', ['flarum/utils/string'], function (_
   var truncate;
   function highlight(string, phrase, length) {
     if (!phrase && !length) return string;
-
+    var replaceStr = function replaceStr(str) {
+      return str.replace(/\\/g, '\\\\').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\./g, '\\.').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+    };
+    phrase = replaceStr(phrase);
+    console.log(phrase);
     // Convert the word phrase into a global regular expression (if it isn't
     // already) so we can search the string for matched.
     var regexp = phrase instanceof RegExp ? phrase : new RegExp(phrase, 'gi');
@@ -22610,7 +22620,7 @@ System.register('flarum/utils/humanTime', [], function (_export, _context) {
     // in the string. If it wasn't this year, we'll show the year as well.
     if (diff < -30 * day) {
       if (m.year() === moment().year()) {
-        ago = m.format('D MMM');
+        ago = m.format('MMM DD' + "日");
       } else {
         ago = m.format('MMM \'YY');
       }
