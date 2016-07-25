@@ -1,0 +1,34 @@
+{
+    "name": "asyou/search",
+    "type": "flarum-extension",
+    "description": "",
+    "keywords": ["search"],
+    "license": "MIT",
+    "version": "v0.1.0-beta.5",
+    "authors": [{
+        "name": "xiaobai",
+        "email": "422145328@qq.com"
+    }],
+    "support": {
+        "source": "https://github.com/asyoume/flarum-search"
+    },
+    "require": {
+        "flarum/core": "^0.1.0-beta.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Flarum\\Search\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "search",
+            "icon": {
+                "image": "icon.svg",
+                "backgroundColor": "#DE2910",
+                "backgroundSize": "cover",
+                "backgroundPosition": "center"
+            }
+        }
+    }
+}
