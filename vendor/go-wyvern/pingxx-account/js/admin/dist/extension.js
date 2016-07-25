@@ -2544,7 +2544,7 @@ System.register('pingxx-account/main', ['flarum/extend', 'flarum/app', 'flarum/M
                 addUsersPane();
                 addTopsPane();
                 addTagTop();
-                addPostTop();
+                // addPostTop();
             });
         }
     };

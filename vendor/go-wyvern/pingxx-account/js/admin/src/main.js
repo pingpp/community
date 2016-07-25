@@ -35,6 +35,6 @@ app.initializers.add('pingxx-account', () => {
     addUsersPane();
     addTopsPane();
     addTagTop();
-    addPostTop();
+    // addPostTop();
 
 });
