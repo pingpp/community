@@ -41,7 +41,8 @@ class PostBasicSerializer extends AbstractSerializer
             'time'        => $this->formatDate($post->time),
             'contentType' => $post->type,
             'agree_count' => (int) $post->agree_count,
-            'praise_count' => (int) $post->praise_count
+            'praise_count' => (int) $post->praise_count,
+            'same_question_count' => (int) $post->same_question_count
 
         ];
 

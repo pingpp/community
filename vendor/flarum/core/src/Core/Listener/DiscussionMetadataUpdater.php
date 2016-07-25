@@ -58,18 +58,28 @@ class DiscussionMetadataUpdater
 
     public function whenPostWasLiked(PostWasLiked $event)
     {
-        $event->post->discussion->praise_count += 1;
-        $event->post->discussion->save();
-        $event->post->praise_count += 1;
-        $event->post->save();
+        if ($event->post->is_start) {
+            $event->post->same_question_count += 1;
+            $event->post->save();
+        } else {
+            $event->post->discussion->praise_count += 1;
+            $event->post->discussion->save();
+            $event->post->praise_count += 1;
+            $event->post->save();
+        }
     }
 
     public function whenPostWasUnliked(PostWasUnliked $event)
     {
-        $event->post->discussion->praise_count += -1;
-        $event->post->discussion->save();
-        $event->post->praise_count += -1;
-        $event->post->save();
+        if ($event->post->is_start) {
+            $event->post->same_question_count += -1;
+            $event->post->save();
+        } else {
+            $event->post->discussion->praise_count += -1;
+            $event->post->discussion->save();
+            $event->post->praise_count += -1;
+            $event->post->save();
+        }
     }
 
     /**
