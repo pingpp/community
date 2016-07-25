@@ -55,7 +55,6 @@ class UserSearcher
     public function search(SearchCriteria $criteria, $limit = null, $offset = 0, array $load = [], $is_pingxx = false)
     {
         $actor = $criteria->actor;
-        error_log($is_pingxx . "\n", 3, "./my-errors.log");
         if ($is_pingxx == "true") {
             $query = $this->users->findNotPingxx()->whereVisibleTo($actor);
         } else {
