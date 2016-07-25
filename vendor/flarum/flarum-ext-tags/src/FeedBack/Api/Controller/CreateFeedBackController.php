@@ -55,6 +55,7 @@ class CreateFeedBackController extends AbstractCreateController
             $feedback->user_mail = $actor->email; 
         }
         $feedback->text = $data["attributes"]["text"];
+        date_default_timezone_set("Asia/Shanghai");
         $feedback->created_at = time();
         $feedback->updated_at = time();
         $feedback->save();

@@ -1315,7 +1315,12 @@ System.register('flarum/tags/feedback/components/FeedBackPage', ['flarum/compone
                                             m(
                                                 'th',
                                                 null,
-                                                '用户id'
+                                                '用户'
+                                            ),
+                                            m(
+                                                'th',
+                                                null,
+                                                '邮箱'
                                             ),
                                             m(
                                                 'th',
@@ -1338,7 +1343,12 @@ System.register('flarum/tags/feedback/components/FeedBackPage', ['flarum/compone
                                                     m(
                                                         'td',
                                                         null,
-                                                        item.user_id
+                                                        item.user_name
+                                                    ),
+                                                    m(
+                                                        'td',
+                                                        null,
+                                                        item.user_mail
                                                     ),
                                                     m(
                                                         'td',

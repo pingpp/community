@@ -32,7 +32,7 @@ export default class FeedBack extends Modal {
   content() {
     return [
       <div className="Modal-body">
-        <div className="Form Form--centered">
+        <div className="Form Form--centered feedback">
           <div className="Form-group">
             <textarea className="FormControl" style="height:200px;text-align: left;" 
               name="text" placeholder="" bidi={this.text}/>
@@ -66,11 +66,21 @@ export default class FeedBack extends Modal {
   onsubmit(e) {
     e.preventDefault();
     this.loading = true;
+    var text = this.$('[name=text]').val();
+    console.log(text.length);
+    if (text.length < 2) {
+      var error = {};
+      error.alert = new Alert;
+      error.alert.props.children = "反馈内容长度需要大于2";
+      super.onerror(error);
+      this.loading = false;
+      return;
+    };
     var data = {
       data: {
         "type": "feedback",
         "attributes": {
-          "text": this.$('[name=text]').val(),
+          "text": text,
         }
       }
     }
@@ -81,7 +91,12 @@ export default class FeedBack extends Modal {
       data,
       errorHandler: this.onerror.bind(this)
     }).then(
-      () => window.location.reload(),
+      function() {
+        $(".feedback").html("谢谢善良的你，反馈已到碗中");
+        setTimeout(function() {
+          window.location.reload();
+        }, 3000);
+      },
       this.loaded.bind(this)
     );
 

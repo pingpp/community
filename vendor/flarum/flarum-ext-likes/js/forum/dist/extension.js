@@ -9,8 +9,6 @@ System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'f
     extend(CommentPost.prototype, 'actionItems', function (items) {
       var post = this.props.post;
 
-      if (window.currIsArticle && post.data.attributes.isStart) return;
-
       if (post.isHidden() || !post.canLike()) return;
 
       var isLiked = app.session.user && post.likes().some(function (user) {
@@ -18,10 +16,14 @@ System.register('flarum/likes/addLikeAction', ['flarum/extend', 'flarum/app', 'f
       });
 
       var title;
-      if (post.data.attributes.isStart) {
-        title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start');
-      } else {
+      if (window.currIsArticle && post.data.attributes.isStart) {
         title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link');
+      } else {
+        if (post.data.attributes.isStart) {
+          title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start');
+        } else {
+          title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link');
+        }
       }
 
       items.add('like', Button.component({
@@ -113,11 +115,15 @@ System.register('flarum/likes/addLikesList', ['flarum/extend', 'flarum/app', 'fl
           ));
         }
 
+        var start = "";
+        if (post.data.attributes.isStart) {
+          start = "_start";
+        }
         items.add('liked', m(
           'div',
           { className: 'Post-likedBy' },
           icon('thumbs-o-up'),
-          app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self' : '') + '_text', names.length, {
+          app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self' + start : '') + '_text', names.length, {
             count: names.length,
             users: punctuateSeries(names)
           })

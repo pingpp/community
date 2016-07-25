@@ -9,18 +9,21 @@ export default function() {
   extend(CommentPost.prototype, 'actionItems', function(items) {
     const post = this.props.post;
 
-    if (window.currIsArticle && post.data.attributes.isStart) return;
-
     if (post.isHidden() || !post.canLike()) return;
 
     let isLiked = app.session.user && post.likes().some(user => user === app.session.user);
 
     var title;
-    if (post.data.attributes.isStart) {
-      title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start')
-    } else {
+    if (window.currIsArticle && post.data.attributes.isStart) {
       title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link')
+    } else {
+      if (post.data.attributes.isStart) {
+        title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link_start' : 'flarum-likes.forum.post.like_link_start')
+      } else {
+        title = app.translator.trans(isLiked ? 'flarum-likes.forum.post.unlike_link' : 'flarum-likes.forum.post.like_link')
+      }
     }
+
 
     items.add('like',
       Button.component({

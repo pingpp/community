@@ -27,6 +27,13 @@ export default class Alert extends Component {
     const children = extract(attrs, 'children');
     const controls = extract(attrs, 'controls') || [];
 
+    for (var i = controls.length - 1; i >= 0; i--) {
+      if (controls[i].props.children == "Debug") {
+        controls.splice(i, 1)
+      }
+    };
+
+
     // If the alert is meant to be dismissible (which is the case by default),
     // then we will create a dismiss button to append as the final control in
     // the alert.

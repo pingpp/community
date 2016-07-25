@@ -14,7 +14,7 @@ export default function alertEmailConfirmation(app) {
 
   const resendButton = Button.component({
     className: 'Button Button--link',
-    children: app.translator.trans('core.forum.user_email_confirmation.resend_button'),
+    children: "重新发送确认邮件",
     onclick: function() {
       resendButton.props.loading = true;
       m.redraw();
@@ -48,7 +48,7 @@ export default function alertEmailConfirmation(app) {
     $('<div/>').insertBefore('#content')[0],
     ContainedAlert.component({
       dismissible: false,
-      children: app.translator.trans('core.forum.user_email_confirmation.alert_message', {email: <strong>{user.email()}</strong>}),
+      children: "我们已经发送了一封邮件至 " + "" + user.email() + "" + "，请打开它并完成账号激活。",
       controls: [resendButton]
     })
   );

@@ -102,7 +102,8 @@ export default class FeedBackPage extends Page {
                     <div className="container">
                         <table className="UserGrid" style="width: 100%;">
                         <thead>
-                            <th>用户id</th>
+                            <th>用户</th>
+                            <th>邮箱</th>
                             <th>反馈内容</th>
                             <th>反馈时间</th>
                         </thead>
@@ -110,7 +111,8 @@ export default class FeedBackPage extends Page {
                             {this.list.map(item => {
                                 return (
                                     <tr>
-                                        <td>{item.user_id}</td>
+                                        <td>{item.user_name}</td>
+                                        <td>{item.user_mail}</td>
                                         <td>{item.text}</td>
                                         <td>{item.created_at}</td>
                                     </tr>

@@ -18827,6 +18827,12 @@ System.register('flarum/components/Alert', ['flarum/Component', 'flarum/componen
             var children = extract(attrs, 'children');
             var controls = extract(attrs, 'controls') || [];
 
+            for (var i = controls.length - 1; i >= 0; i--) {
+              if (controls[i].props.children == "Debug") {
+                controls.splice(i, 1);
+              }
+            };
+
             // If the alert is meant to be dismissible (which is the case by default),
             // then we will create a dismiss button to append as the final control in
             // the alert.
@@ -22070,7 +22076,7 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
               { className: 'Modal-body' },
               m(
                 'div',
-                { className: 'Form Form--centered' },
+                { className: 'Form Form--centered feedback' },
                 m(
                   'div',
                   { className: 'Form-group' },
@@ -22108,11 +22114,21 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
           value: function onsubmit(e) {
             e.preventDefault();
             this.loading = true;
+            var text = this.$('[name=text]').val();
+            console.log(text.length);
+            if (text.length < 2) {
+              var error = {};
+              error.alert = new Alert();
+              error.alert.props.children = "反馈内容长度需要大于2";
+              babelHelpers.get(Object.getPrototypeOf(FeedBack.prototype), 'onerror', this).call(this, error);
+              this.loading = false;
+              return;
+            };
             var data = {
               data: {
                 "type": "feedback",
                 "attributes": {
-                  "text": this.$('[name=text]').val()
+                  "text": text
                 }
               }
             };
@@ -22123,7 +22139,10 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
               data: data,
               errorHandler: this.onerror.bind(this)
             }).then(function () {
-              return window.location.reload();
+              $(".feedback").html("谢谢善良的你，反馈已到碗中");
+              setTimeout(function () {
+                window.location.reload();
+              }, 3000);
             }, this.loaded.bind(this));
           }
         }, {
@@ -23321,7 +23340,8 @@ System.register('flarum/components/LogInModal', ['flarum/components/Modal', 'fla
           key: 'onerror',
           value: function onerror(error) {
             if (error.status === 401) {
-              error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+              // error.alert.props.children = app.translator.trans('core.forum.log_in.invalid_login_message');
+              error.alert.props.children = JSON.parse(error.responseText).errors[0].message;
             }
 
             babelHelpers.get(Object.getPrototypeOf(LogInModal.prototype), 'onerror', this).call(this, error);
@@ -28836,7 +28856,7 @@ System.register('flarum/initializers/alertEmailConfirmation', ['flarum/component
 
     var resendButton = Button.component({
       className: 'Button Button--link',
-      children: app.translator.trans('core.forum.user_email_confirmation.resend_button'),
+      children: "重新发送确认邮件",
       onclick: function onclick() {
         resendButton.props.loading = true;
         m.redraw();
@@ -28883,11 +28903,7 @@ System.register('flarum/initializers/alertEmailConfirmation', ['flarum/component
 
     m.mount($('<div/>').insertBefore('#content')[0], ContainedAlert.component({
       dismissible: false,
-      children: app.translator.trans('core.forum.user_email_confirmation.alert_message', { email: m(
-          'strong',
-          null,
-          user.email()
-        ) }),
+      children: "我们已经发送了一封邮件至 " + "" + user.email() + "" + "，请打开它并完成账号激活。",
       controls: [resendButton]
     }));
   }
@@ -30620,11 +30636,11 @@ System.register('flarum/utils/DiscussionControls', ['flarum/components/Discussio
           var items = new ItemList();
 
           if (discussion.canRename()) {
-            items.add('rename', Button.component({
+            /*items.add('rename', Button.component({
               icon: 'pencil',
               children: app.translator.trans('core.forum.discussion_controls.rename_button'),
               onclick: this.renameAction.bind(discussion)
-            }));
+            }));*/
           }
 
           return items;
@@ -30703,14 +30719,24 @@ System.register('flarum/utils/DiscussionControls', ['flarum/components/Discussio
           return deferred.promise;
         },
         hideAction: function hideAction() {
-          this.pushAttributes({ hideTime: new Date(), hideUser: app.session.user });
+          this.pushAttributes({
+            hideTime: new Date(),
+            hideUser: app.session.user
+          });
 
-          return this.save({ isHidden: true });
+          return this.save({
+            isHidden: true
+          });
         },
         restoreAction: function restoreAction() {
-          this.pushAttributes({ hideTime: null, hideUser: null });
+          this.pushAttributes({
+            hideTime: null,
+            hideUser: null
+          });
 
-          return this.save({ isHidden: false });
+          return this.save({
+            isHidden: false
+          });
         },
         deleteAction: function deleteAction() {
           var _this3 = this;
@@ -30741,7 +30767,9 @@ System.register('flarum/utils/DiscussionControls', ['flarum/components/Discussio
           // save has completed, update the post stream as there will be a new post
           // indicating that the discussion was renamed.
           if (title && title !== currentTitle) {
-            return this.save({ title: title }).then(function () {
+            return this.save({
+              title: title
+            }).then(function () {
               if (app.viewingDiscussion(_this4)) {
                 app.current.stream.update();
               }

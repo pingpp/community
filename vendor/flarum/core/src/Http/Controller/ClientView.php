@@ -128,7 +128,7 @@ class ClientView implements Renderable
         $this->layout = $layout;
         $this->localeJs = $localeJs;
 
-        $this->addHeadString('<link rel="stylesheet" href="//fonts.useso.com/css?family=Open+Sans:400italic,700italic,400,700,600">', 'font');
+        //$this->addHeadString('<link rel="stylesheet" href="//fonts.useso.com/css?family=Open+Sans:400italic,700italic,400,700,600">', 'font');
     }
 
     /**

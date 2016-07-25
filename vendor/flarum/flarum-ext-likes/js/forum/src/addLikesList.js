@@ -44,10 +44,14 @@ export default function() {
         );
       }
 
+      var start = "";
+      if (post.data.attributes.isStart) {
+        start = "_start"
+      }
       items.add('liked', (
         <div className="Post-likedBy">
           {icon('thumbs-o-up')}
-          {app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self' : '') + '_text', names.length, {
+          {app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self'+start : '') + '_text', names.length, {
             count: names.length,
             users: punctuateSeries(names)
           })}
