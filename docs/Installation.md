@@ -21,6 +21,8 @@ MySQL 5.5+
 ```
 $ git clone git@git.pingxx.com:Design/pp-community.git
 ```
+[MySQL sql 文件](install.sql)
+
 
 ## 配置文件生成
 项目配置文件模板位于： __dir_root/conf.temp.php ( __dir_root为项目目录)
