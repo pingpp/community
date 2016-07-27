@@ -81,7 +81,7 @@ export default class SettingsPage extends UserPage {
 
     items.add('changeEmail',
       Button.component({
-        children: app.translator.trans('core.forum.settings.change_email_button'),
+        children: "修改用户信息",
         className: 'Button',
         onclick: () => app.modal.show(new ChangeEmailModal())
       })
@@ -98,7 +98,9 @@ export default class SettingsPage extends UserPage {
   notificationsItems() {
     const items = new ItemList();
 
-    items.add('notificationGrid', NotificationGrid.component({user: this.user}));
+    items.add('notificationGrid', NotificationGrid.component({
+      user: this.user
+    }));
 
     return items;
   }
@@ -114,7 +116,9 @@ export default class SettingsPage extends UserPage {
       if (component) component.loading = true;
       m.redraw();
 
-      this.user.savePreferences({[key]: value}).then(() => {
+      this.user.savePreferences({
+        [key]: value
+      }).then(() => {
         if (component) component.loading = false;
         m.redraw();
       });
@@ -134,7 +138,9 @@ export default class SettingsPage extends UserPage {
         children: app.translator.trans('core.forum.settings.privacy_disclose_online_label'),
         state: this.user.preferences().discloseOnline,
         onchange: (value, component) => {
-          this.user.pushAttributes({lastSeenTime: null});
+          this.user.pushAttributes({
+            lastSeenTime: null
+          });
           this.preferenceSaver('discloseOnline')(value, component);
         }
       })

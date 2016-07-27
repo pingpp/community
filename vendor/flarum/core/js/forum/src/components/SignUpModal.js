@@ -4,6 +4,7 @@ import avatar from 'flarum/helpers/avatar';
 import Button from 'flarum/components/Button';
 import LogInButtons from 'flarum/components/LogInButtons';
 import extractText from 'flarum/utils/extractText';
+import Alert from 'flarum/components/Alert';
 
 /**
  * The `SignUpModal` component displays a modal dialog with a singup form.
@@ -39,6 +40,8 @@ export default class SignUpModal extends Modal {
      * @type {Function}
      */
     this.password = m.prop(this.props.password || '');
+
+    this.password2 = '';
   }
 
   className() {
@@ -84,6 +87,14 @@ export default class SignUpModal extends Modal {
             <input className="FormControl" name="password" type="password" placeholder={extractText(app.translator.trans('core.forum.sign_up.password_placeholder'))}
               value={this.password()}
               onchange={m.withAttr('value', this.password)}
+              disabled={this.loading} />
+          </div>
+        )}
+
+        {this.props.token ? '' : (
+          <div className="Form-group">
+            <input className="FormControl" name="password2" type="password" placeholder="确认用户密码"
+              value=""
               disabled={this.loading} />
           </div>
         )}
@@ -135,6 +146,15 @@ export default class SignUpModal extends Modal {
     e.preventDefault();
 
     this.loading = true;
+
+    if (this.$('[name=password]').val() != this.$('[name=password2]').val()) {
+      var error = {};
+      error.alert = new Alert;
+      error.alert.props.children = "两次输入密码不一样";
+      super.onerror(error);
+      this.loading = false;
+      return;
+    };
 
     const data = this.submitData();
 

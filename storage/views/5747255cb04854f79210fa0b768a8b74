@@ -1,17 +1,11 @@
 Hey <?php echo e($user->username); ?>!
+ 你关注的 "<?php echo e($blueprint->post->discussion->title); ?>" 有了新的更新诶
+ 你想要看么,请戳下面链接
+ <?php echo e(app()->url()); ?>/d/<?php echo e($blueprint->post->discussion_id); ?>/<?php echo e($blueprint->post->number); ?>
 
-<?php echo e($blueprint->post->user->username); ?> made a post in a discussion you're following: <?php echo e($blueprint->post->discussion->title); ?>
+ ---
+   <?php echo e($blueprint->post->user->username); ?>是这样说的:
+   <?php echo e(strip_tags($blueprint->post->contentHtml)); ?>
 
-
-To view the new activity, check out the following link:
-<?php echo e(app()->url()); ?>/d/<?php echo e($blueprint->post->discussion_id); ?>/<?php echo e($blueprint->post->number); ?>
-
-
----
-
-<?php echo e(strip_tags($blueprint->post->contentHtml)); ?>
-
-
----
-
-You won't receive any more notifications about this discussion until you're up-to-date.
+ ---
+回复也可能不止这一条,在你没有去主动更新之前我们不再给你通知了哈～

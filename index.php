@@ -9,7 +9,6 @@
  * file that was distributed with this source code.
  */
 
-
 require 'vendor/autoload.php';
 
 $server = new Flarum\Forum\Server(__DIR__);

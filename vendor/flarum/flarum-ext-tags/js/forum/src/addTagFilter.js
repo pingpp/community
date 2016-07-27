@@ -4,6 +4,7 @@ import {
 } from 'flarum/extend';
 import IndexPage from 'flarum/components/IndexPage';
 import DiscussionList from 'flarum/components/DiscussionList';
+import DiscussionsUserPage from 'flarum/components/DiscussionsUserPage';
 
 import TagHero from 'flarum/tags/components/TagHero';
 
@@ -70,7 +71,9 @@ export default function() {
 
     if (window.following) return;
 
-    if (window.ToArticle) {
+    console.log(m.route.param('article'));
+
+    if (m.route.param('article') == 1) {
       params.filter.q = (params.filter.q || '') + " article:is";
     } else {
       params.filter.q = (params.filter.q || '') + " article:not";

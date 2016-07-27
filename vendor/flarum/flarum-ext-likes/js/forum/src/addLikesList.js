@@ -1,6 +1,4 @@
-import {
-  extend
-} from 'flarum/extend';
+import { extend } from 'flarum/extend';
 import app from 'flarum/app';
 import CommentPost from 'flarum/components/CommentPost';
 import punctuateSeries from 'flarum/helpers/punctuateSeries';
@@ -36,30 +34,27 @@ export default function() {
       if (overLimit) {
         const count = likes.length - names.length;
 
-        names.push( < a href = "#"
-          onclick = {
-            e => {
-              e.preventDefault();
-              app.modal.show(new PostLikesModal({
-                post
-              }));
-            }
-          } > {
-            app.translator.transChoice('flarum-likes.forum.post.others_link', count, {
-              count
-            })
-          } < /a>
+        names.push(
+          <a href="#" onclick={e => {
+            e.preventDefault();
+            app.modal.show(new PostLikesModal({post}));
+          }}>
+            {app.translator.transChoice('flarum-likes.forum.post.others_link', count, {count})}
+          </a>
         );
       }
 
       var start = "";
       if (post.data.attributes.isStart) {
         start = "_start"
+        if (window.currIsArticle) {
+          start = "_start_article";
+        };
       }
       items.add('liked', (
         <div className="Post-likedBy">
           {icon('thumbs-o-up')}
-          {app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self'+start : '') + '_text', names.length, {
+          {app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self'+start : ''+start) + '_text', names.length, {
             count: names.length,
             users: punctuateSeries(names)
           })}

@@ -93,6 +93,7 @@ export default class FeedBack extends Modal {
     }).then(
       function() {
         $(".feedback").html("谢谢善良的你，反馈已到碗中");
+        $(".LogInModal-signUp").html("我们从不忽略任何⼀条哪怕很⼩的反馈");
         setTimeout(function() {
           window.location.reload();
         }, 3000);

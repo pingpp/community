@@ -12,6 +12,10 @@ System.register('flarum/tags/addTagComposer', ['flarum/extend', 'flarum/componen
       if (tag && tag.isArticle() != window.isArticle) {
         return;
       }
+      if (!tag.data.attributes.canStartDiscussion) {
+        return;
+      };
+      console.log(tag);
       if (tag) {
         (function () {
           var parent = tag.parent();
@@ -133,10 +137,10 @@ System.register('flarum/tags/addTagControl', ['flarum/extend', 'flarum/utils/Dis
 });;
 'use strict';
 
-System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components/IndexPage', 'flarum/components/DiscussionList', 'flarum/tags/components/TagHero'], function (_export, _context) {
+System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components/IndexPage', 'flarum/components/DiscussionList', 'flarum/components/DiscussionsUserPage', 'flarum/tags/components/TagHero'], function (_export, _context) {
   "use strict";
 
-  var extend, override, IndexPage, DiscussionList, TagHero;
+  var extend, override, IndexPage, DiscussionList, DiscussionsUserPage, TagHero;
 
   _export('default', function () {
     IndexPage.prototype.currentTag = function () {
@@ -200,7 +204,9 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
 
       if (window.following) return;
 
-      if (window.ToArticle) {
+      console.log(m.route.param('article'));
+
+      if (m.route.param('article') == 1) {
         params.filter.q = (params.filter.q || '') + " article:is";
       } else {
         params.filter.q = (params.filter.q || '') + " article:not";
@@ -216,6 +222,8 @@ System.register('flarum/tags/addTagFilter', ['flarum/extend', 'flarum/components
       IndexPage = _flarumComponentsIndexPage.default;
     }, function (_flarumComponentsDiscussionList) {
       DiscussionList = _flarumComponentsDiscussionList.default;
+    }, function (_flarumComponentsDiscussionsUserPage) {
+      DiscussionsUserPage = _flarumComponentsDiscussionsUserPage.default;
     }, function (_flarumTagsComponentsTagHero) {
       TagHero = _flarumTagsComponentsTagHero.default;
     }],
@@ -429,6 +437,48 @@ System.register('flarum/tags/best/addBestAction', ['flarum/extend', 'flarum/app'
       Button = _flarumComponentsButton.default;
     }, function (_flarumComponentsCommentPost) {
       CommentPost = _flarumComponentsCommentPost.default;
+    }],
+    execute: function () {}
+  };
+});;
+'use strict';
+
+System.register('flarum/tags/best/addBestList', ['flarum/extend', 'flarum/app', 'flarum/components/CommentPost', 'flarum/helpers/punctuateSeries', 'flarum/helpers/username', 'flarum/helpers/icon', 'flarum/likes/components/PostLikesModal'], function (_export, _context) {
+  "use strict";
+
+  var extend, app, CommentPost, punctuateSeries, username, icon, PostLikesModal;
+
+  _export('default', function () {
+    extend(CommentPost.prototype, 'footerItems', function (items) {
+      var post = this.props.post;
+      var likes = post.likes();
+
+      if (post.data.attributes.isBest) {
+        items.add('best', m(
+          'div',
+          { className: 'Post-likedBy', style: 'color: #287b2d;' },
+          icon('check'),
+          '该答案被采纳了'
+        ));
+      }
+    });
+  });
+
+  return {
+    setters: [function (_flarumExtend) {
+      extend = _flarumExtend.extend;
+    }, function (_flarumApp) {
+      app = _flarumApp.default;
+    }, function (_flarumComponentsCommentPost) {
+      CommentPost = _flarumComponentsCommentPost.default;
+    }, function (_flarumHelpersPunctuateSeries) {
+      punctuateSeries = _flarumHelpersPunctuateSeries.default;
+    }, function (_flarumHelpersUsername) {
+      username = _flarumHelpersUsername.default;
+    }, function (_flarumHelpersIcon) {
+      icon = _flarumHelpersIcon.default;
+    }, function (_flarumLikesComponentsPostLikesModal) {
+      PostLikesModal = _flarumLikesComponentsPostLikesModal.default;
     }],
     execute: function () {}
   };
@@ -1321,10 +1371,10 @@ System.register('flarum/tags/helpers/tagsLabel', ['flarum/utils/extract', 'flaru
 });;
 'use strict';
 
-System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion', 'flarum/components/IndexPage', 'flarum/tags/models/Tag', 'flarum/tags/components/TagsPage', 'flarum/tags/components/DiscussionTaggedPost', 'flarum/tags/addTagList', 'flarum/tags/addTagFilter', 'flarum/tags/addTagLabels', 'flarum/tags/addTagControl', 'flarum/tags/addTagComposer', 'flarum/models/Post', 'flarum/tags/best/addBestAction', 'flarum/tags/models/FeedBack'], function (_export, _context) {
+System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion', 'flarum/components/IndexPage', 'flarum/tags/models/Tag', 'flarum/tags/components/TagsPage', 'flarum/tags/components/DiscussionTaggedPost', 'flarum/tags/addTagList', 'flarum/tags/addTagFilter', 'flarum/tags/addTagLabels', 'flarum/tags/addTagControl', 'flarum/tags/addTagComposer', 'flarum/models/Post', 'flarum/tags/best/addBestAction', 'flarum/tags/best/addBestList', 'flarum/tags/models/FeedBack'], function (_export, _context) {
   "use strict";
 
-  var Model, Discussion, IndexPage, Tag, TagsPage, DiscussionTaggedPost, addTagList, addTagFilter, addTagLabels, addTagControl, addTagComposer, Post, addBestAction, FeedBack;
+  var Model, Discussion, IndexPage, Tag, TagsPage, DiscussionTaggedPost, addTagList, addTagFilter, addTagLabels, addTagControl, addTagComposer, Post, addBestAction, addBestList, FeedBack;
   return {
     setters: [function (_flarumModel) {
       Model = _flarumModel.default;
@@ -1352,6 +1402,8 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
       Post = _flarumModelsPost.default;
     }, function (_flarumTagsBestAddBestAction) {
       addBestAction = _flarumTagsBestAddBestAction.default;
+    }, function (_flarumTagsBestAddBestList) {
+      addBestList = _flarumTagsBestAddBestList.default;
     }, function (_flarumTagsModelsFeedBack) {
       FeedBack = _flarumTagsModelsFeedBack.default;
     }],
@@ -1395,6 +1447,7 @@ System.register('flarum/tags/main', ['flarum/Model', 'flarum/models/Discussion',
         addTagLabels();
         addTagControl();
         addTagComposer();
+        addBestList();
 
         addBestAction();
       });

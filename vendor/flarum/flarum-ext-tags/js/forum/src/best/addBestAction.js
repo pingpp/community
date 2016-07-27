@@ -10,12 +10,12 @@ export default function() {
     const post = this.props.post;
 
     if (post.isHidden()) return;
-      console.log(window.currbestId);
+    console.log(window.currbestId);
 
-    let isBest  = post.data.attributes.isBest;
-    if ((window.currbestId == 0 || isBest)&&!window.currIsArticle&&
-        post.data.attributes.isStart==false&&app.session.user&&
-        window.currdiscussion.data.attributes.startUserId == app.session.user.id()){
+    let isBest = post.data.attributes.isBest;
+    if ((window.currbestId == 0 || isBest) && !window.currIsArticle &&
+      post.data.attributes.isStart == false && app.session.user &&
+      window.currdiscussion.data.attributes.startUserId == app.session.user.id()) {
 
       var text = "采纳答案";
       if (isBest) {
@@ -28,10 +28,10 @@ export default function() {
           className: 'Button Button--link',
           onclick: () => {
             post.save({
-              "DiscussionId":window.currdiscussion.data.id,
-              "Isbest":!isBest
+              "DiscussionId": window.currdiscussion.data.id,
+              "Isbest": !isBest
             }).then(() => {
-                location.reload()
+              location.reload()
             });
           }
         })

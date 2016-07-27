@@ -75,14 +75,15 @@ export default class Search extends Component {
       this.value(currentSearch || '');
     }
 
-    return (
-      <div className={'Search ' + classList({
-        open: this.value() && this.hasFocus,
-        focused: this.hasFocus,
-        active: !!currentSearch,
-        loading: !!this.loadingSources
-      })}>
-        <div className="Search-input">
+    return ( < div className = {
+        'Search ' + classList({
+          open: this.value() && this.hasFocus,
+          focused: this.hasFocus,
+          active: !!currentSearch,
+          loading: !!this.loadingSources
+        })
+      } >
+      <div className="Search-input">
           <input className="FormControl"
             placeholder={extractText(app.translator.trans('core.forum.header.search_placeholder'))}
             value={this.value()}
@@ -94,13 +95,9 @@ export default class Search extends Component {
             : currentSearch
               ? <button className="Search-clear Button Button--icon Button--link" onclick={this.clear.bind(this)}>{icon('times-circle')}</button>
               : ''}
-        </div>
-        <ul className="Dropdown-menu Search-results">
-          {this.value() && this.hasFocus
-            ? this.sources.map(source => source.view(this.value()))
-            : ''}
-        </ul>
-      </div>
+        </div> < ul className = "Dropdown-menu Search-results" > {
+        this.value() && this.hasFocus ? this.sources.map(source => source.view(this.value())) : ''
+      } < /ul> < /div >
     );
   }
 
@@ -116,18 +113,19 @@ export default class Search extends Component {
       .on('mousedown', e => e.preventDefault())
       .on('click', () => this.$('input').blur())
 
-      // Whenever the mouse is hovered over a search result, highlight it.
-      .on('mouseenter', '> li:not(.Dropdown-header)', function() {
-        search.setIndex(
-          search.selectableItems().index(this)
-        );
-      });
+    // Whenever the mouse is hovered over a search result, highlight it.
+    .on('mouseenter', '> li:not(.Dropdown-header)', function() {
+      search.setIndex(
+        search.selectableItems().index(this)
+      );
+    });
 
     // Handle navigation key events on the search input.
     this.$('input')
       .on('keydown', e => {
         switch (e.which) {
-          case 40: case 38: // Down/Up
+          case 40:
+          case 38: // Down/Up
             this.setIndex(this.getCurrentNumericIndex() + (e.which === 40 ? 1 : -1), true);
             e.preventDefault();
             break;
@@ -150,38 +148,38 @@ export default class Search extends Component {
         }
       })
 
-      // Handle input key events on the search input, triggering results to
-      // load.
-      .on('input focus', function() {
-        const query = this.value.toLowerCase();
+    // Handle input key events on the search input, triggering results to
+    // load.
+    .on('input focus', function() {
+      const query = this.value.toLowerCase();
 
-        if (!query) return;
+      if (!query) return;
 
-        clearTimeout(search.searchTimeout);
-        search.searchTimeout = setTimeout(() => {
-          if (search.searched.indexOf(query) !== -1) return;
+      clearTimeout(search.searchTimeout);
+      search.searchTimeout = setTimeout(() => {
+        if (search.searched.indexOf(query) !== -1) return;
 
-          if (query.length >= 1) {
-            search.sources.map(source => {
-              if (!source.search) return;
+        if (query.length >= 0) {
+          search.sources.map(source => {
+            if (!source.search) return;
 
-              search.loadingSources++;
+            search.loadingSources++;
 
-              source.search(query).then(() => {
-                search.loadingSources--;
-                m.redraw();
-              });
+            source.search(query).then(() => {
+              search.loadingSources--;
+              m.redraw();
             });
-          }
+          });
+        }
 
-          search.searched.push(query);
-          m.redraw();
-        }, 250);
-      })
+        search.searched.push(query);
+        m.redraw();
+      }, 250);
+    })
 
-      .on('focus', function() {
-        $(this).one('mouseup', e => e.preventDefault()).select();
-      });
+    .on('focus', function() {
+      $(this).one('mouseup', e => e.preventDefault()).select();
+    });
   }
 
   /**
@@ -213,7 +211,7 @@ export default class Search extends Component {
    */
   sourceItems() {
     const items = new ItemList();
-    
+
     items.add('discussions', new SearchEngineSource());
     items.add('users', new UsersSearchSource());
 
@@ -295,7 +293,9 @@ export default class Search extends Component {
       }
 
       if (typeof scrollTop !== 'undefined') {
-        $dropdown.stop(true).animate({scrollTop}, 100);
+        $dropdown.stop(true).animate({
+          scrollTop
+        }, 100);
       }
     }
   }

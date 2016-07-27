@@ -22,6 +22,7 @@ export default class ChangeEmailModal extends Modal {
      * @type {function}
      */
     this.email = m.prop(app.session.user.email());
+    this.username = m.prop(app.session.user.username());
 
     /**
      * The value of the password input.
@@ -36,7 +37,7 @@ export default class ChangeEmailModal extends Modal {
   }
 
   title() {
-    return app.translator.trans('core.forum.change_email.title');
+    return "修改用户信息";
   }
 
   content() {
@@ -44,7 +45,9 @@ export default class ChangeEmailModal extends Modal {
       return (
         <div className="Modal-body">
           <div className="Form Form--centered">
-            <p className="helpText">{app.translator.trans('core.forum.change_email.confirmation_message', {email: <strong>{this.email()}</strong>})}</p>
+            <p className="helpText">
+              修改成功,如果你修改了邮件地址,我们已经发送了一封邮件至 {this.email()}，请打开它并完成邮件地址修改
+            </p>
             <div className="Form-group">
               <Button className="Button Button--primary Button--block" onclick={this.hide.bind(this)}>
                 {app.translator.trans('core.forum.change_email.dismiss_button')}
@@ -64,6 +67,14 @@ export default class ChangeEmailModal extends Modal {
               bidi={this.email}
               disabled={this.loading}/>
           </div>
+
+          <div className="Form-group">
+            <input type="text" name="username" className="FormControl"
+              placeholder={app.session.user.username()}
+              bidi={this.username}
+              disabled={this.loading}/>
+          </div>
+
           <div className="Form-group">
             <input type="password" name="password" className="FormControl"
               placeholder={app.translator.trans('core.forum.change_email.confirm_password_label')}
@@ -88,7 +99,7 @@ export default class ChangeEmailModal extends Modal {
 
     // If the user hasn't actually entered a different email address, we don't
     // need to do anything. Woot!
-    if (this.email() === app.session.user.email()) {
+    if (this.email() === app.session.user.email() && this.username() === app.session.user.username()) {
       this.hide();
       return;
     }
@@ -97,10 +108,15 @@ export default class ChangeEmailModal extends Modal {
 
     this.loading = true;
 
-    app.session.user.save({email: this.email()}, {
-      errorHandler: this.onerror.bind(this),
-      meta: {password: this.password()}
-    })
+    app.session.user.save({
+        email: this.email(),
+        username: this.username()
+      }, {
+        errorHandler: this.onerror.bind(this),
+        meta: {
+          password: this.password()
+        }
+      })
       .then(() => this.success = true)
       .catch(() => {})
       .then(this.loaded.bind(this));

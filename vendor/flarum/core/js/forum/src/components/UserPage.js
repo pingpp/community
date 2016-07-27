@@ -61,8 +61,7 @@ export default class UserPage extends Page {
    *
    * @return {VirtualElement}
    */
-  content() {
-  }
+  content() {}
 
   /**
    * Initialize the component with a user, and trigger the loading of their
@@ -129,10 +128,13 @@ export default class UserPage extends Page {
     const items = new ItemList();
     const user = this.user;
 
-    items.add('posts',
+    items.add('ask_discussions',
       LinkButton.component({
-        href: app.route('user.posts', {username: user.username()}),
-        children: [app.translator.trans('core.forum.user.posts_link'), <span className="Button-badge">{user.commentsCount()}</span>],
+        href: app.route('user.discussions', {
+          username: user.username(),
+          article: "0"
+        }),
+        children: ["问题", <span className="Button-badge">{user.data.attributes.ask_count}</span>],
         icon: 'comment-o'
       }),
       100
@@ -140,12 +142,29 @@ export default class UserPage extends Page {
 
     items.add('discussions',
       LinkButton.component({
-        href: app.route('user.discussions', {username: user.username()}),
-        children: [app.translator.trans('core.forum.user.discussions_link'), <span className="Button-badge">{user.discussionsCount()}</span>],
+        href: app.route('user.discussions', {
+          username: user.username(),
+          article: "1"
+        }),
+        children: ["文章", <span className="Button-badge">{user.data.attributes.discussionsCount}</span>],
         icon: 'reorder'
       }),
-      90
+      100
     );
+
+
+    items.add('posts',
+      LinkButton.component({
+        href: app.route('user.posts', {
+          username: user.username(),
+          article: "0"
+        }),
+        children: ["回复", <span className="Button-badge">{user.data.attributes.commentsCount+user.data.attributes.answer_count}</span>],
+        icon: 'comment-o'
+      }),
+      100
+    );
+
 
     if (app.session.user === user) {
       items.add('separator', Separator.component(), -90);
@@ -154,10 +173,10 @@ export default class UserPage extends Page {
           href: app.route('settings'),
           children: app.translator.trans('core.forum.user.settings_link'),
           icon: 'cog'
-        }),
-        -100
+        }), -100
       );
     }
+
 
     return items;
   }

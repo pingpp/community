@@ -12,6 +12,7 @@
     'strict' => false,
   ),
   'url' => 'http://192.168.24.43:1237',
+  'search_url' => 'http://192.168.24.43:1239',
   'paths' => array (
     'api' => 'api',
     'admin' => 'admin',

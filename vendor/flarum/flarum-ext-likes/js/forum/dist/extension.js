@@ -118,12 +118,15 @@ System.register('flarum/likes/addLikesList', ['flarum/extend', 'flarum/app', 'fl
         var start = "";
         if (post.data.attributes.isStart) {
           start = "_start";
+          if (window.currIsArticle) {
+            start = "_start_article";
+          };
         }
         items.add('liked', m(
           'div',
           { className: 'Post-likedBy' },
           icon('thumbs-o-up'),
-          app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self' + start : '') + '_text', names.length, {
+          app.translator.transChoice('flarum-likes.forum.post.liked_by' + (likes[0] === app.session.user ? '_self' + start : '' + start) + '_text', names.length, {
             count: names.length,
             users: punctuateSeries(names)
           })

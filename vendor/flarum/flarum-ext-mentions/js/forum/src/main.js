@@ -1,7 +1,11 @@
-import { extend } from 'flarum/extend';
+import {
+  extend
+} from 'flarum/extend';
 import app from 'flarum/app';
 import NotificationGrid from 'flarum/components/NotificationGrid';
-import { getPlainContent } from 'flarum/utils/string';
+import {
+  getPlainContent
+} from 'flarum/utils/string';
 
 import addPostMentionPreviews from 'flarum/mentions/addPostMentionPreviews';
 import addMentionedByList from 'flarum/mentions/addMentionedByList';
@@ -49,7 +53,7 @@ app.initializers.add('flarum-mentions', function() {
   });
 
   // Add mentions tab in user profile
-  app.routes['user.mentions'] = {path: '/u/:username/mentions', component: MentionsUserPage.component()};
+  /*app.routes['user.mentions'] = {path: '/u/:username/mentions', component: MentionsUserPage.component()};
   extend(UserPage.prototype, 'navItems', function(items) {
     const user = this.user;
     items.add('mentions',
@@ -61,7 +65,7 @@ app.initializers.add('flarum-mentions', function() {
       }),
       80
     );
-  });
+  });*/
 
   getPlainContent.removeSelectors.push('a.PostMention');
 });

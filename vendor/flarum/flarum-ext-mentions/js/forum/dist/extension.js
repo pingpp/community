@@ -132,6 +132,8 @@ if (typeof module != 'undefined' && typeof module.exports != 'undefined') {
 'use strict';
 
 System.register('flarum/mentions/addComposerAutocomplete', ['flarum/extend', 'flarum/components/ComposerBody', 'flarum/helpers/avatar', 'flarum/helpers/username', 'flarum/helpers/highlight', 'flarum/utils/string', 'flarum/mentions/components/AutocompleteDropdown'], function (_export, _context) {
+  "use strict";
+
   var extend, ComposerBody, avatar, usernameHelper, highlight, truncate, AutocompleteDropdown;
   function addComposerAutocomplete() {
     extend(ComposerBody.prototype, 'config', function (original, isInitialized) {
@@ -300,8 +302,6 @@ System.register('flarum/mentions/addComposerAutocomplete', ['flarum/extend', 'fl
 
   return {
     setters: [function (_flarumExtend) {
-      /*global getCaretCoordinates*/
-
       extend = _flarumExtend.extend;
     }, function (_flarumComponentsComposerBody) {
       ComposerBody = _flarumComponentsComposerBody.default;
@@ -322,6 +322,8 @@ System.register('flarum/mentions/addComposerAutocomplete', ['flarum/extend', 'fl
 'use strict';
 
 System.register('flarum/mentions/addMentionedByList', ['flarum/extend', 'flarum/Model', 'flarum/models/Post', 'flarum/components/CommentPost', 'flarum/components/PostPreview', 'flarum/helpers/punctuateSeries', 'flarum/helpers/username', 'flarum/helpers/icon'], function (_export, _context) {
+  "use strict";
+
   var extend, Model, Post, CommentPost, PostPreview, punctuateSeries, username, icon;
   function addMentionedByList() {
     Post.prototype.mentionedBy = Model.hasMany('mentionedBy');
@@ -479,6 +481,8 @@ System.register('flarum/mentions/addMentionedByList', ['flarum/extend', 'flarum/
 'use strict';
 
 System.register('flarum/mentions/addPostMentionPreviews', ['flarum/extend', 'flarum/components/CommentPost', 'flarum/components/PostPreview', 'flarum/components/LoadingIndicator'], function (_export, _context) {
+  "use strict";
+
   var extend, CommentPost, PostPreview, LoadingIndicator;
   function addPostMentionPreviews() {
     extend(CommentPost.prototype, 'config', function () {
@@ -628,6 +632,8 @@ System.register('flarum/mentions/addPostMentionPreviews', ['flarum/extend', 'fla
 'use strict';
 
 System.register('flarum/mentions/addPostReplyAction', ['flarum/extend', 'flarum/components/Button', 'flarum/components/CommentPost', 'flarum/utils/DiscussionControls'], function (_export, _context) {
+  "use strict";
+
   var extend, Button, CommentPost, DiscussionControls;
 
   _export('default', function () {
@@ -639,6 +645,11 @@ System.register('flarum/mentions/addPostReplyAction', ['flarum/extend', 'flarum/
       function insertMention(component, quote) {
         var user = post.user();
         var mention = '@' + (user ? user.username() : post.number()) + '#' + post.id() + ' ';
+
+        if (mention == window.reply_mention) {
+          return;
+        };
+        window.reply_mention = mention;
 
         // If the composer is empty, then assume we're starting a new reply.
         // In which case we don't want the user to have to confirm if they
@@ -690,6 +701,8 @@ System.register('flarum/mentions/addPostReplyAction', ['flarum/extend', 'flarum/
 'use strict';
 
 System.register('flarum/mentions/components/AutocompleteDropdown', ['flarum/Component'], function (_export, _context) {
+  "use strict";
+
   var Component, AutocompleteDropdown;
   return {
     setters: [function (_flarumComponent) {
@@ -826,6 +839,8 @@ System.register('flarum/mentions/components/AutocompleteDropdown', ['flarum/Comp
 'use strict';
 
 System.register('flarum/mentions/components/MentionsUserPage', ['flarum/components/PostsUserPage'], function (_export, _context) {
+  "use strict";
+
   var PostsUserPage, MentionsUserPage;
   return {
     setters: [function (_flarumComponentsPostsUserPage) {
@@ -863,6 +878,8 @@ System.register('flarum/mentions/components/MentionsUserPage', ['flarum/componen
 'use strict';
 
 System.register('flarum/mentions/components/PostMentionedNotification', ['flarum/components/Notification', 'flarum/helpers/username', 'flarum/helpers/punctuateSeries'], function (_export, _context) {
+  "use strict";
+
   var Notification, username, punctuateSeries, PostMentionedNotification;
   return {
     setters: [function (_flarumComponentsNotification) {
@@ -924,6 +941,8 @@ System.register('flarum/mentions/components/PostMentionedNotification', ['flarum
 'use strict';
 
 System.register('flarum/mentions/components/UserMentionedNotification', ['flarum/components/Notification'], function (_export, _context) {
+  "use strict";
+
   var Notification, UserMentionedNotification;
   return {
     setters: [function (_flarumComponentsNotification) {
@@ -973,6 +992,8 @@ System.register('flarum/mentions/components/UserMentionedNotification', ['flarum
 'use strict';
 
 System.register('flarum/mentions/main', ['flarum/extend', 'flarum/app', 'flarum/components/NotificationGrid', 'flarum/utils/string', 'flarum/mentions/addPostMentionPreviews', 'flarum/mentions/addMentionedByList', 'flarum/mentions/addPostReplyAction', 'flarum/mentions/addComposerAutocomplete', 'flarum/mentions/components/PostMentionedNotification', 'flarum/mentions/components/UserMentionedNotification', 'flarum/components/UserPage', 'flarum/components/LinkButton', 'flarum/mentions/components/MentionsUserPage'], function (_export, _context) {
+  "use strict";
+
   var extend, app, NotificationGrid, getPlainContent, addPostMentionPreviews, addMentionedByList, addPostReplyAction, addComposerAutocomplete, PostMentionedNotification, UserMentionedNotification, UserPage, LinkButton, MentionsUserPage;
   return {
     setters: [function (_flarumExtend) {
@@ -1040,16 +1061,19 @@ System.register('flarum/mentions/main', ['flarum/extend', 'flarum/app', 'flarum/
         });
 
         // Add mentions tab in user profile
-        app.routes['user.mentions'] = { path: '/u/:username/mentions', component: MentionsUserPage.component() };
-        extend(UserPage.prototype, 'navItems', function (items) {
-          var user = this.user;
-          items.add('mentions', LinkButton.component({
-            href: app.route('user.mentions', { username: user.username() }),
-            name: 'mentions',
-            children: [app.translator.trans('flarum-mentions.forum.user.mentions_link')],
-            icon: 'at'
-          }), 80);
-        });
+        /*app.routes['user.mentions'] = {path: '/u/:username/mentions', component: MentionsUserPage.component()};
+        extend(UserPage.prototype, 'navItems', function(items) {
+          const user = this.user;
+          items.add('mentions',
+            LinkButton.component({
+              href: app.route('user.mentions', {username: user.username()}),
+              name: 'mentions',
+              children: [app.translator.trans('flarum-mentions.forum.user.mentions_link')],
+              icon: 'at'
+            }),
+            80
+          );
+        });*/
 
         getPlainContent.removeSelectors.push('a.PostMention');
       });

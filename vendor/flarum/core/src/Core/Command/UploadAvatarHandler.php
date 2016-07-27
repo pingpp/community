@@ -95,8 +95,8 @@ class UploadAvatarHandler
 
         $this->validator->assertValid(['avatar' => $file]);
 
-        $manager = new ImageManager;
-        $manager->make($tmpFile)->fit(100, 100)->save();
+        //$manager = new ImageManager;
+        //$manager->make($tmpFile)->fit(100, 100)->save();
 
         $this->events->fire(
             new AvatarWillBeSaved($user, $actor, $tmpFile)

@@ -66,7 +66,7 @@ class EditUserHandler
         $validate = [];
 
         if (isset($attributes['username'])) {
-            $this->assertPermission($canEdit);
+            //$this->assertPermission($canEdit);
             $user->rename($attributes['username']);
         }
 

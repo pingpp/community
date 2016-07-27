@@ -15,6 +15,7 @@ import addTagComposer from 'flarum/tags/addTagComposer';
 
 import Post from 'flarum/models/Post';
 import addBestAction from 'flarum/tags/best/addBestAction';
+import addBestList from 'flarum/tags/best/addBestList';
 
 import FeedBack from 'flarum/tags/models/FeedBack';
 
@@ -54,6 +55,7 @@ app.initializers.add('flarum-tags', function(app) {
   addTagLabels();
   addTagControl();
   addTagComposer();
+  addBestList();
 
   addBestAction();
 });

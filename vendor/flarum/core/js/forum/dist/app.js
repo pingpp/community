@@ -19279,6 +19279,7 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
              * @type {function}
              */
             this.email = m.prop(app.session.user.email());
+            this.username = m.prop(app.session.user.username());
 
             /**
              * The value of the password input.
@@ -19295,7 +19296,7 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
         }, {
           key: 'title',
           value: function title() {
-            return app.translator.trans('core.forum.change_email.title');
+            return "修改用户信息";
           }
         }, {
           key: 'content',
@@ -19310,11 +19311,9 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
                   m(
                     'p',
                     { className: 'helpText' },
-                    app.translator.trans('core.forum.change_email.confirmation_message', { email: m(
-                        'strong',
-                        null,
-                        this.email()
-                      ) })
+                    '修改成功,如果你修改了邮件地址,我们已经发送了一封邮件至 ',
+                    this.email(),
+                    '，请打开它并完成邮件地址修改'
                   ),
                   m(
                     'div',
@@ -19341,6 +19340,14 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
                   m('input', { type: 'email', name: 'email', className: 'FormControl',
                     placeholder: app.session.user.email(),
                     bidi: this.email,
+                    disabled: this.loading })
+                ),
+                m(
+                  'div',
+                  { className: 'Form-group' },
+                  m('input', { type: 'text', name: 'username', className: 'FormControl',
+                    placeholder: app.session.user.username(),
+                    bidi: this.username,
                     disabled: this.loading })
                 ),
                 m(
@@ -19373,7 +19380,7 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
 
             // If the user hasn't actually entered a different email address, we don't
             // need to do anything. Woot!
-            if (this.email() === app.session.user.email()) {
+            if (this.email() === app.session.user.email() && this.username() === app.session.user.username()) {
               this.hide();
               return;
             }
@@ -19382,9 +19389,14 @@ System.register('flarum/components/ChangeEmailModal', ['flarum/components/Modal'
 
             this.loading = true;
 
-            app.session.user.save({ email: this.email() }, {
+            app.session.user.save({
+              email: this.email(),
+              username: this.username()
+            }, {
               errorHandler: this.onerror.bind(this),
-              meta: { password: this.password() }
+              meta: {
+                password: this.password()
+              }
             }).then(function () {
               return _this2.success = true;
             }).catch(function () {}).then(this.loaded.bind(this));
@@ -22140,6 +22152,7 @@ System.register('flarum/components/FeedBack', ['flarum/components/Modal', 'flaru
               errorHandler: this.onerror.bind(this)
             }).then(function () {
               $(".feedback").html("谢谢善良的你，反馈已到碗中");
+              $(".LogInModal-signUp").html("我们从不忽略任何⼀条哪怕很⼩的反馈");
               setTimeout(function () {
                 window.location.reload();
               }, 3000);
@@ -25924,9 +25937,13 @@ System.register('flarum/components/PostsUserPage', ['flarum/components/UserPage'
             return app.store.find('posts', {
               filter: {
                 user: this.user.id(),
-                type: 'comment'
+                type: 'comment',
+                article: m.route.param('article')
               },
-              page: { offset: offset, limit: this.loadLimit },
+              page: {
+                offset: offset,
+                limit: this.loadLimit
+              },
               sort: '-time'
             });
           }
@@ -26541,13 +26558,17 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
                   icon('times-circle')
                 ) : ''
               ),
+              ' ',
               m(
                 'ul',
                 { className: 'Dropdown-menu Search-results' },
+                ' ',
                 this.value() && this.hasFocus ? this.sources.map(function (source) {
                   return source.view(_this2.value());
-                }) : ''
-              )
+                }) : '',
+                ' '
+              ),
+              ' '
             );
           }
         }, {
@@ -26576,7 +26597,8 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
             // Handle navigation key events on the search input.
             this.$('input').on('keydown', function (e) {
               switch (e.which) {
-                case 40:case 38:
+                case 40:
+                case 38:
                   // Down/Up
                   _this3.setIndex(_this3.getCurrentNumericIndex() + (e.which === 40 ? 1 : -1), true);
                   e.preventDefault();
@@ -26613,7 +26635,7 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
               search.searchTimeout = setTimeout(function () {
                 if (search.searched.indexOf(query) !== -1) return;
 
-                if (query.length >= 1) {
+                if (query.length >= 0) {
                   search.sources.map(function (source) {
                     if (!source.search) return;
 
@@ -26715,7 +26737,9 @@ System.register('flarum/components/Search', ['flarum/Component', 'flarum/compone
               }
 
               if (typeof scrollTop !== 'undefined') {
-                $dropdown.stop(true).animate({ scrollTop: scrollTop }, 100);
+                $dropdown.stop(true).animate({
+                  scrollTop: scrollTop
+                }, 100);
               }
             }
           }
@@ -26754,34 +26778,86 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
                         this.results[query] = [];
 
                         var SearchEngine = this;
-                        return $.when($.get("http://192.168.24.43:1239/search?text=" + query)).then(function (data, ok) {
+                        return $.when($.get(window.search_url + "/search?text=" + query)).then(function (data, ok) {
                             if (ok == "success") {
                                 SearchEngine.results[query] = data.Data;
                             }
                         });
                     }
                 }, {
+                    key: 'getUrl',
+                    value: function getUrl(t) {
+                        switch (t) {
+                            case "community":
+                                return "/d/";
+                                break;
+                            case "help":
+                                return "https://help.pingxx.com/article/";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }, {
+                    key: 'getTag',
+                    value: function getTag(t) {
+                        switch (t) {
+                            case "community":
+                                return "社区";
+                                break;
+                            case "help":
+                                return "帮助中心";
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }, {
+                    key: 'getTagColor',
+                    value: function getTagColor(t) {
+                        switch (t) {
+                            case "community":
+                                return {
+                                    color: "rgb(232, 145, 0)",
+                                    backgroundColor: "#8dcaef"
+                                };
+                                break;
+                            case "help":
+                                return {
+                                    color: "rgb(232, 145, 0)",
+                                    backgroundColor: "#028a3f"
+                                };
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }, {
                     key: 'view',
                     value: function view(query) {
-                        var results = this.results[query] || [];
+                        var _this = this;
 
+                        query = query.toLowerCase();
+                        var results = this.results[query] || [];
+                        console.log(query);
                         return [results.map(function (data) {
+                            console.log(data);
                             return m(
                                 'li',
                                 { className: 'DiscussionSearchResult', 'data-index': data.DocName + data.Id },
                                 m(
                                     'a',
-                                    { href: "https://help.pingxx.com/article/" + data.Data.id, target: '_blank' },
+                                    { href: _this.getUrl(data.DocName) + data.Data.id, target: '_blank' },
                                     m(
                                         'div',
                                         { className: 'DiscussionSearchResult-title' },
                                         m(
                                             'span',
-                                            { 'class': 'TagLabel  colored', style: 'color: rgb(232, 145, 0); background-color: rgb(232, 145, 0);' },
+                                            { 'class': 'TagLabel  colored', style: _this.getTagColor(data.DocName) },
                                             m(
                                                 'span',
                                                 { 'class': 'TagLabel-text' },
-                                                '帮助中心'
+                                                _this.getTag(data.DocName)
                                             )
                                         ),
                                         '   ',
@@ -27173,7 +27249,7 @@ System.register('flarum/components/SettingsPage', ['flarum/components/UserPage',
             }));
 
             items.add('changeEmail', Button.component({
-              children: app.translator.trans('core.forum.settings.change_email_button'),
+              children: "修改用户信息",
               className: 'Button',
               onclick: function onclick() {
                 return app.modal.show(new ChangeEmailModal());
@@ -27187,7 +27263,9 @@ System.register('flarum/components/SettingsPage', ['flarum/components/UserPage',
           value: function notificationsItems() {
             var items = new ItemList();
 
-            items.add('notificationGrid', NotificationGrid.component({ user: this.user }));
+            items.add('notificationGrid', NotificationGrid.component({
+              user: this.user
+            }));
 
             return items;
           }
@@ -27217,7 +27295,9 @@ System.register('flarum/components/SettingsPage', ['flarum/components/UserPage',
               children: app.translator.trans('core.forum.settings.privacy_disclose_online_label'),
               state: this.user.preferences().discloseOnline,
               onchange: function onchange(value, component) {
-                _this3.user.pushAttributes({ lastSeenTime: null });
+                _this3.user.pushAttributes({
+                  lastSeenTime: null
+                });
                 _this3.preferenceSaver('discloseOnline')(value, component);
               }
             }));
@@ -27234,10 +27314,10 @@ System.register('flarum/components/SettingsPage', ['flarum/components/UserPage',
 });;
 'use strict';
 
-System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'flarum/components/LogInModal', 'flarum/helpers/avatar', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText'], function (_export, _context) {
+System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'flarum/components/LogInModal', 'flarum/helpers/avatar', 'flarum/components/Button', 'flarum/components/LogInButtons', 'flarum/utils/extractText', 'flarum/components/Alert'], function (_export, _context) {
   "use strict";
 
-  var Modal, LogInModal, avatar, Button, LogInButtons, extractText, SignUpModal;
+  var Modal, LogInModal, avatar, Button, LogInButtons, extractText, Alert, SignUpModal;
   return {
     setters: [function (_flarumComponentsModal) {
       Modal = _flarumComponentsModal.default;
@@ -27251,6 +27331,8 @@ System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'fl
       LogInButtons = _flarumComponentsLogInButtons.default;
     }, function (_flarumUtilsExtractText) {
       extractText = _flarumUtilsExtractText.default;
+    }, function (_flarumComponentsAlert) {
+      Alert = _flarumComponentsAlert.default;
     }],
     execute: function () {
       SignUpModal = function (_Modal) {
@@ -27286,6 +27368,8 @@ System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'fl
              * @type {Function}
              */
             this.password = m.prop(this.props.password || '');
+
+            this.password2 = '';
           }
         }, {
           key: 'className',
@@ -27340,6 +27424,13 @@ System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'fl
                   onchange: m.withAttr('value', this.password),
                   disabled: this.loading })
               ),
+              this.props.token ? '' : m(
+                'div',
+                { className: 'Form-group' },
+                m('input', { className: 'FormControl', name: 'password2', type: 'password', placeholder: '确认用户密码',
+                  value: '',
+                  disabled: this.loading })
+              ),
               m(
                 'div',
                 { className: 'Form-group' },
@@ -27388,6 +27479,15 @@ System.register('flarum/components/SignUpModal', ['flarum/components/Modal', 'fl
             e.preventDefault();
 
             this.loading = true;
+
+            if (this.$('[name=password]').val() != this.$('[name=password2]').val()) {
+              var error = {};
+              error.alert = new Alert();
+              error.alert.props.children = "两次输入密码不一样";
+              babelHelpers.get(Object.getPrototypeOf(SignUpModal.prototype), 'onerror', this).call(this, error);
+              this.loading = false;
+              return;
+            };
 
             var data = this.submitData();
 
@@ -28131,25 +28231,44 @@ System.register('flarum/components/UserPage', ['flarum/components/Page', 'flarum
             var items = new ItemList();
             var user = this.user;
 
-            items.add('posts', LinkButton.component({
-              href: app.route('user.posts', { username: user.username() }),
-              children: [app.translator.trans('core.forum.user.posts_link'), m(
+            items.add('ask_discussions', LinkButton.component({
+              href: app.route('user.discussions', {
+                username: user.username(),
+                article: "0"
+              }),
+              children: ["问题", m(
                 'span',
                 { className: 'Button-badge' },
-                user.commentsCount()
+                user.data.attributes.ask_count
               )],
               icon: 'comment-o'
             }), 100);
 
             items.add('discussions', LinkButton.component({
-              href: app.route('user.discussions', { username: user.username() }),
-              children: [app.translator.trans('core.forum.user.discussions_link'), m(
+              href: app.route('user.discussions', {
+                username: user.username(),
+                article: "1"
+              }),
+              children: ["文章", m(
                 'span',
                 { className: 'Button-badge' },
-                user.discussionsCount()
+                user.data.attributes.discussionsCount
               )],
               icon: 'reorder'
-            }), 90);
+            }), 100);
+
+            items.add('posts', LinkButton.component({
+              href: app.route('user.posts', {
+                username: user.username(),
+                article: "0"
+              }),
+              children: ["回复", m(
+                'span',
+                { className: 'Button-badge' },
+                user.data.attributes.commentsCount + user.data.attributes.answer_count
+              )],
+              icon: 'comment-o'
+            }), 100);
 
             if (app.session.user === user) {
               items.add('separator', Separator.component(), -90);

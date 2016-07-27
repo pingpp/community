@@ -21,6 +21,9 @@
  * - #composer
  */
 ?>
+<script type="text/javascript">
+  window.search_url = "<?php echo $GLOBALS['search_url'];?>";
+</script>
 <div id="app" class="App">
 
   <div id="app-navigation" class="App-navigation"></div>

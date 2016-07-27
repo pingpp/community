@@ -107,13 +107,18 @@ export default class PostsUserPage extends UserPage {
    * @return {Promise}
    * @protected
    */
+
   loadResults(offset) {
     return app.store.find('posts', {
       filter: {
         user: this.user.id(),
-        type: 'comment'
+        type: 'comment',
+        article: m.route.param('article')
       },
-      page: {offset, limit: this.loadLimit},
+      page: {
+        offset,
+        limit: this.loadLimit
+      },
       sort: '-time'
     });
   }

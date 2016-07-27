@@ -36,6 +36,7 @@ abstract class AbstractServer
 
         if (file_exists($file = $this->path.'/config.php')) {
             $this->config = include $file;
+            $GLOBALS['search_url'] = $this->config["search_url"];
         }
     }
 
