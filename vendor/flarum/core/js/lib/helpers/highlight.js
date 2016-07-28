@@ -26,7 +26,6 @@ export default function highlight(string, phrase, length) {
       .replace(/\)/g, '\\)')
   }
   phrase = replaceStr(phrase)
-  console.log(phrase)
     // Convert the word phrase into a global regular expression (if it isn't
     // already) so we can search the string for matched.
   const regexp = phrase instanceof RegExp ? phrase : new RegExp(phrase, 'gi');

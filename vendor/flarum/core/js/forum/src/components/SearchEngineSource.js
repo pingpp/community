@@ -68,7 +68,6 @@ export default class SearchEngineSource {
     view(query) {
         query = query.toLowerCase();
         const results = this.results[query] || [];
-        console.log(query);
         return [
             results.map(data => {
                 console.log(data);

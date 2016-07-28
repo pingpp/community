@@ -26839,7 +26839,6 @@ System.register('flarum/components/SearchEngineSource', ['flarum/helpers/highlig
 
                         query = query.toLowerCase();
                         var results = this.results[query] || [];
-                        console.log(query);
                         return [results.map(function (data) {
                             console.log(data);
                             return m(
@@ -28728,7 +28727,6 @@ System.register('flarum/helpers/highlight', ['flarum/utils/string'], function (_
       return str.replace(/\\/g, '\\\\').replace(/\+/g, '\\+').replace(/\*/g, '\\*').replace(/\./g, '\\.').replace(/\[/g, '\\[').replace(/\]/g, '\\]').replace(/\./g, '\\.').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
     };
     phrase = replaceStr(phrase);
-    console.log(phrase);
     // Convert the word phrase into a global regular expression (if it isn't
     // already) so we can search the string for matched.
     var regexp = phrase instanceof RegExp ? phrase : new RegExp(phrase, 'gi');
