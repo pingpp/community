@@ -69,7 +69,9 @@ class UserSearcher
         $this->gambits->apply($search, $criteria->query);
         $this->applySort($search, $criteria->sort);
         $this->applyOffset($search, $offset);
-        $this->applyLimit($search, $limit + 1);
+        if ($limit!=null) {
+            $this->applyLimit($search, $limit + 1);
+        }
 
         event(new ConfigureUserSearch($search, $criteria));
 
@@ -77,13 +79,15 @@ class UserSearcher
         // results than the user asked for, so that we can say if there are more
         // results. If there are, we will get rid of that extra result.
         $users = $query->get();
-
-        if ($areMoreResults = ($limit > 0 && $users->count() > $limit)) {
-            $users->pop();
+        if ($limit!=null) {
+            if ($areMoreResults = ($limit > 0 && $users->count() > $limit)) {
+                $users->pop();
+            }
+            $users->load($load);
+            return new SearchResults($users, $areMoreResults);
+        }else{
+            $users->load($load);
+            return new SearchResults($users, false);
         }
-
-        $users->load($load);
-
-        return new SearchResults($users, $areMoreResults);
     }
 }
