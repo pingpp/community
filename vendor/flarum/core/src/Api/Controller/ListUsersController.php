@@ -76,7 +76,7 @@ class ListUsersController extends AbstractCollectionController
 
         $criteria = new SearchCriteria($actor, $query, $sort);
 
-        $limit = $this->extractLimit($request);
+        $limit = $this->extractUserLimit($request);
         $offset = $this->extractOffset($request);
         $load = $this->extractInclude($request);
 

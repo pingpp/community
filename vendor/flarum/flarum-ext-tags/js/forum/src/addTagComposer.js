@@ -15,7 +15,7 @@ export default function() {
     if (tag && tag.isArticle() != window.isArticle) {
       return
     }
-    if (!tag.data.attributes.canStartDiscussion) {
+    if (tag && !tag.data.attributes.canStartDiscussion) {
       return
     };
     console.log(tag);

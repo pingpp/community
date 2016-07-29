@@ -110,7 +110,7 @@ class SaveTagsToDatabase
 
         if ($count < $min || $count > $max) {
             throw new ValidationException([
-                'tags' => sprintf('Discussion must have between %d and %d primary tags.', $min, $max)
+                'tags' => sprintf("请至少添加 %d 个标签，最多 %d 个标签", $min, $max)
             ]);
         }
     }
@@ -126,7 +126,7 @@ class SaveTagsToDatabase
 
         if ($count < $min || $count > $max) {
             throw new ValidationException([
-                'tags' => sprintf('Discussion must have between %d and %d secondary tags.', $min, $max)
+                'tags' => sprintf("请至少添加 %d 个标签，最多 %d 个标签", $min, $max)
             ]);
         }
     }
