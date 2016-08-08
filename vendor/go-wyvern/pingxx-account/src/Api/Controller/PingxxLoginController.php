@@ -111,7 +111,7 @@ class PingxxLoginController implements ControllerInterface
                         ->withDomain('dashboard.pingxx.com')
                 );
 
-                $responseNew = $this->rememberer->remember($responseNew, $token);
+//                $responseNew = $this->rememberer->remember($responseNew, $token);
                 return $responseNew;
             } else{
                 return $response;
