@@ -13,6 +13,7 @@ namespace Pingxx\Account\Api\Controller;
 use Flarum\Http\AccessToken;
 use Flarum\Http\Controller\ControllerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Flarum\Core\Repository\UserRepository;
 use Zend\Diactoros\Response\JsonResponse;
 use Flarum\Core\User;
 use Flarum\Core\Exception\PermissionDeniedException;
@@ -21,6 +22,12 @@ use Dflydev\FigCookies\SetCookie;
 
 class PingxxTokenController implements ControllerInterface
 {
+    protected $users;
+
+    public function __construct(UserRepository $users)
+    {
+        $this->users = $users;
+    }
     /**
      * {@inheritdoc}
      */
@@ -39,15 +46,19 @@ class PingxxTokenController implements ControllerInterface
 
         if ($result->status) {
             $username = explode("@", $identification)[0];
-            $user = User::register($username, $identification, $password);
-            $user->activate();
-            if (isset($token)) {
-                foreach ($token->payload as $k => $v) {
-                    $user->$k = $v;
+            $user = $this->users->findByIdentification($username);
+
+            if (!$user){
+                $user = User::register($username, $identification, "");
+                $user->activate();
+                if (isset($token)) {
+                    foreach ($token->payload as $k => $v) {
+                        $user->$k = $v;
+                    }
                 }
+                $user->create_from = '来自Ping++ Dashboard账户中心';
+                $user->save();
             }
-            $user->create_from = '来自Ping++ Dashboard账户中心';
-            $user->save();
 
             if (isset($token)) {
                 $token->delete();
@@ -60,6 +71,7 @@ class PingxxTokenController implements ControllerInterface
                 'userId' => $user->id,
                 'status' => $result->status
             ]);
+
 
 
             foreach ($pingxx_request->cookies as $Pcookie) {

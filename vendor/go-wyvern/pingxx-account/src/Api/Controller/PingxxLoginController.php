@@ -90,7 +90,7 @@ class PingxxLoginController implements ControllerInterface
             );
 
             $response = $this->rememberer->remember($response, $token);
-        } elseif ($response->getStatusCode() === 401) {
+        } elseif ($response->getStatusCode() == 401) {
             $responseNew = $this->apiClient->send(PingxxTokenController::class, $actor, [], $params);
 
             if ($responseNew->getStatusCode() === 200) {
