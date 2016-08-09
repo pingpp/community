@@ -60,7 +60,11 @@ export default class Dashboard extends Page {
     }
 
     loadDiscussions() {
-        return app.store.find('discussions');
+        return app.store.find('discussions',{
+            page: {
+                limit: 200000000000000
+            }
+        });
     }
 
     parseUsers(results) {
