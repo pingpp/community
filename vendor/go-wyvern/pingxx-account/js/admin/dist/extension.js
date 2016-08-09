@@ -402,7 +402,11 @@ System.register('pingxx-account/components/Dashboard', ['flarum/components/Page'
                 }, {
                     key: 'loadDiscussions',
                     value: function loadDiscussions() {
-                        return app.store.find('discussions');
+                        return app.store.find('discussions', {
+                            page: {
+                                limit: 200000000000000
+                            }
+                        });
                     }
                 }, {
                     key: 'parseUsers',
