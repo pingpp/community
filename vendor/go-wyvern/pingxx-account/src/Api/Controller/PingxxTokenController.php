@@ -39,17 +39,18 @@ class PingxxTokenController implements ControllerInterface
         $password = array_get($body, 'password');
         $lifetime = array_get($body, 'lifetime', 3600);
 
-        $data = 'email=' . $identification . '&password=' . $password;
+        $data = 'email=' . urlencode($identification) . '&password=' . urlencode($password);
         $pingxx_request = new Request('https://dashboard.pingxx.com/auto/user/login', $data);
         $body = $pingxx_request->vpost();
         $result = json_decode($body, false);
 
         if ($result->status) {
+            $user = $this->users->findByIdentification($identification);
+
             $username = explode("@", $identification)[0];
-            $user = $this->users->findByIdentification($username);
 
             if (!$user){
-                $user = User::register($username, $identification, "");
+                $user = User::register($username.rand(100,999), $identification, "");
                 $user->activate();
                 if (isset($token)) {
                     foreach ($token->payload as $k => $v) {
