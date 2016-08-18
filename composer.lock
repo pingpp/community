@@ -1825,12 +1825,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/go-wyvern/pingxx-account.git",
-                "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703"
+                "reference": "4235999b7f6573886ffd59bf176c32b07d92c81c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/07b0b746d6b8e223ad4263f05565ccd41709d703",
-                "reference": "07b0b746d6b8e223ad4263f05565ccd41709d703",
+                "url": "https://api.github.com/repos/go-wyvern/pingxx-account/zipball/4235999b7f6573886ffd59bf176c32b07d92c81c",
+                "reference": "4235999b7f6573886ffd59bf176c32b07d92c81c",
                 "shasum": ""
             },
             "require": {
@@ -1871,7 +1871,7 @@
             "keywords": [
                 "account"
             ],
-            "time": "2016-07-19 01:39:57"
+            "time": "2016-07-25 02:48:10"
         },
         {
             "name": "guzzle/guzzle",

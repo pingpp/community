@@ -42,7 +42,7 @@ class PingxxTokenController implements ControllerInterface
         $data = 'email=' . urlencode($identification) . '&password=' . urlencode($password);
         $pingxx_request = new Request('https://dashboard.pingxx.com/auto/user/login', $data);
         $body = $pingxx_request->vpost();
-        $result = json_decode($body, false);
+        $result = json_decode($body);
 
         if ($result->status) {
             $user = $this->users->findByIdentification($identification);
@@ -137,13 +137,12 @@ class Request
         curl_setopt($curl, CURLOPT_NOBODY, FALSE);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $this->data);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, FALSE);
-        curl_setopt($curl, CURLOPT_REFERER, $headers['Referer']);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 120);
         if ($this->data != '') {
             curl_setopt($curl, CURLOPT_POSTFIELDS, $this->data);
         }
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, FALSE);
+        curl_setopt($curl, CURLOPT_REFERER, $headers['Referer']);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 120);
         curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
         $resp = curl_exec($curl);
